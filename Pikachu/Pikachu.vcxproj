@@ -140,12 +140,18 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Board.cpp" />
-    <ClCompile Include="Common.cpp" />
+    <ClCompile Include="Controller.cpp" />
+    <ClCompile Include="BoardView.cpp" />
+    <ClCompile Include="Game.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Point.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Board.h" />
-    <ClInclude Include="Common.h" />
+    <ClInclude Include="Controller.h" />
+    <ClInclude Include="BoardView.h" />
+    <ClInclude Include="Game.h" />
+    <ClInclude Include="Point.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,7 +1,10 @@
-#include "Board.h"
+#include "Controller.h"
+#include "BoardView.h"
+#include "Game.h"
 
 int main()
 {
-	Board::drawBoard(10, 0, 0);
-	Board::addPokemon(10, 0, 0);
+    Controller::setUpConsole();
+    Game g;
+    g.startGame();
 }

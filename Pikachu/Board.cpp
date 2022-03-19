@@ -1,103 +1,43 @@
 #include "Board.h"
 
-
-void Board::drawBoard(int _size, int _left, int _top)
+Board::Board(int n_rows, int n_columns, int n_types, std::vector<int> count) :
+	n_rows(n_rows), n_cols(n_cols),
+	_pokemons(std::vector<std::vector<int>>(n_rows, std::vector<int>(n_cols, -1)))
 {
-	// Draw top line
-	Common::gotoXY(_left + 1, _top);
-	putchar(201);
-	for (int i = 1; i < _size * 4; i++)
-	{
-		Sleep(5);
-		if (i % 4 == 0)
-			putchar(209);
-		else
-			putchar(205);
-	}
-	putchar(187);
-
-
-	// Draw right line
-	for (int i = 1; i < _size * 2; i++)
-	{
-		Sleep(10);
-		Common::gotoXY(_size * 4 + _left + 1, i + _top);
-		if (i % 2 != 0)
-			putchar(186);
-		else
-			putchar(182);
-	}
-	Common::gotoXY(_size * 4 + _left + 1, _size * 2 + _top);
-	putchar(188);
-
-
-	// Draw bottom line
-	for (int i = 1; i < _size * 4; i++)
-	{
-		Common::gotoXY(_size * 4 + _left - i + 1, _size * 2 + _top);
-		Sleep(5);
-		if (i % 4 == 0)
-			putchar(207);
-		else
-			putchar(205);
-	}
-	Common::gotoXY(_left + 1, _size * 2 + _top);
-	putchar(200);
-
-	// Draw left line
-	for (int i = 1; i < _size * 2; i++)
-	{
-		Sleep(10);
-		Common::gotoXY(_left + 1, _size * 2 + _top - i);
-		if (i % 2 != 0)
-			putchar(186);
-		else
-			putchar(199);
-	}
-
-	// Draw vertical lines
-	for (int i = 1; i < _size * 2; i++)
-	{
-		for (int j = 4; j < _size * 4; j += 4)
-		{
-			if (i % 2 != 0)
-			{
-				Common::gotoXY(j + _left + 1, i + _top);
-				putchar(179);
-			}
+	map<int, int> countType; // countType[x] counts number of type x
+	for (int i = 0; i < n_rows; ++i) {
+		for (int j = 0; j < n_cols; ++j) {
+			int type;
+			do {
+				type = rand() % n_types;
+			} while (countType[type] >= count[type]);
+			countType[type] += 1;
+			addPokemon(i, j, type + 1);
 		}
-		Sleep(10);
 	}
-
-	// Draw horizontal lines
-	for (int i = 1; i < _size * 4; i++)
-	{
-		for (int j = 2; j < _size * 2; j += 2)
-		{
-			Common::gotoXY(i + _left + 1, j + _top);
-			if (i % 4 == 0)
-				putchar(197);
-			else
-				putchar(196);
-		}
-		Sleep(5);
-	}
-	cout << "\n\n\n\n";
 }
 
-void Board::addPokemon(int _size, int _left, int _top) {
-	for (int i = 1; i < _size * 2; i++)
-	{
-		for (int j = 2; j < _size * 4; j += 4)
-		{
-			if (i % 2 != 0)
-			{
-				Common::gotoXY(j + _left + 1, i + _top);
-				char x = rand() % (90-65) + 65;
-				putchar(x);
-			}
-		}
-		Sleep(10);
-	}
-	cout << "\n\n\n\n";
+int Board::getNRows()
+{
+	return n_rows;
+}
+
+int Board::getNCols()
+{
+	return n_cols;
+}
+
+void Board::addPokemon(int x, int y, int type)
+{
+	_pokemons[x][y] = type;
+}
+
+int Board::getPokemon(int x, int y)
+{
+	return _pokemons[x][y];
+}
+
+void Board::removePokemon(int x, int y)
+{
+	_pokemons[x][y] = -1;
 }

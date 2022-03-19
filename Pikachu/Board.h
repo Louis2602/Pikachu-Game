@@ -1,19 +1,20 @@
 ﻿#pragma once
-#include <iostream>
-#include <string>
-#include <unordered_map>
 #include <Windows.h>
 #include <vector>
-#include "Common.h"
+#include <map>
 
 using namespace std;
 
 class Board
 {
 private:
-	static int _size;              // Board size
-	static int _left, _top;        // Coordinate to start drawing board
+	int n_rows, n_cols;
+	vector<vector<int>> _pokemons;
 public:
-	static void drawBoard(int, int, int);		// Generate Board
-	static void addPokemon(int, int, int);
+	Board(int n_rows, int n_cols, int n_types, vector<int> count);
+	int getNRows();
+	int getNCols();
+	void addPokemon(int x, int y, int type);
+	int getPokemon(int x, int y);
+	void removePokemon(int x, int y);
 };
