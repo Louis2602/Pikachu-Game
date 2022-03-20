@@ -1,16 +1,19 @@
 ﻿#pragma once
-#include "Board.h"
 #include "Controller.h"
 #include "Point.h"
 #include <iostream>
+#include <ctime>
+#include <vector>
 
 using namespace std;
 
 
 class BoardView {
 private:
-	Point** pBoard;
-	int size, left, top;
+	int size;						// Size of the board
+	int left, top;					// Board Coordinate
+	Point** pBoard;					// Board position array
+	int* pokemons;
 public:
 	BoardView(int, int, int);			
 	~BoardView();
@@ -19,6 +22,9 @@ public:
 	int getTop();					//Lấy tọa độ trên bắt đầu bàn cờ
 	int getXAt(int, int);			//Lấy tọa độ x tại ô
 	int getYAt(int, int);			//Lấy tọa độ y tại ô
-	void showBoard();
 	int getCheckAtXY(int, int);
+
+	void showBoard();
+	void renderBoard();
+	void buildBoardData();
 };

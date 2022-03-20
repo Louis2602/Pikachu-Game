@@ -5,10 +5,11 @@ Point::Point()
 	_x = _y = _check = 0;
 }
 
-Point::Point(int pX, int pY)
+Point::Point(int x, int y, char pokemon)
 {
-	_x = pX; _y = pY;
+	_x = x; _y = y;
 	_check = 0;
+	_pokemon = pokemon;
 }
 
 int Point::getX()
@@ -44,4 +45,14 @@ bool Point::setCheck(int pCheck)
 		return true;
 	}
 	return false;
+}
+
+char Point::getPokemons()
+{
+	return _pokemon;
+}
+
+void Point::setPokemons(char pokemon)
+{
+	_pokemon = pokemon;
 }

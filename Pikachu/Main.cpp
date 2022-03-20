@@ -1,10 +1,10 @@
 #include "Controller.h"
-#include "BoardView.h"
 #include "Game.h"
+#include "BoardView.h"
 
 int main()
 {
     Controller::setUpConsole();
     Game g;
     g.startGame();
-}
+}  

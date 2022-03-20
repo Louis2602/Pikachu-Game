@@ -1,28 +1,37 @@
-#include "Game.h"
+﻿#include "Game.h"
 
 Game::Game()
 {
 	_x = LEFT, _y = TOP;
 	board = new BoardView(SIZE, LEFT, TOP);
-	_loop = true;
-	_showCursor = true;
+	isPlaying = false;
 }
+
 Game::~Game() {
 	delete board;
 	board = nullptr;
 }
+
 void Game::startGame() 
 {
-	Controller::showCursor(_showCursor);
-	board->showBoard();
-	while (_loop)
-	{
-		_x = board->getXAt(5, 6);
-		_y = board->getYAt(5, 6);
-		Controller::gotoXY(_x + 7, _y + 8);		
-		
+	Controller::clearConsole();
+	isPlaying = false;
+	printInterface();	
+	_x = board->getXAt(0, 0);
+	_y = board->getYAt(0, 0);
+	Controller::gotoXY(_x, _y);
+	Controller::setConsoleColor(BRIGHT_WHITE, GREEN);
+	while (!isPlaying) {
 		switch (Controller::getConsoleInput())
 		{
+		case 0:
+			Controller::playSound(4);
+			break;
+		case 1:
+			Controller::showCursor(false);
+			Controller::setConsoleColor(BLACK, WHITE);
+			Controller::clearConsole();
+			return;
 		case 2:
 			moveUp();
 			break;
@@ -35,7 +44,68 @@ void Game::startGame()
 		case 5:
 			moveDown();
 			break;
+		case 6:
+			Controller::playSound(3);
+			processCheckBoard();
+			break;
 		}
+	}
+}
+void Game::processCheckBoard()
+{
+	Controller::setConsoleColor(BRIGHT_WHITE, RED);
+}
+void Game::moveRight()
+{
+	if (_x < board->getXAt(board->getSize() - 1, board->getSize() - 1))
+	{
+		if (board->getCheckAtXY(_x, _y) == 0)
+		{
+			Controller::gotoXY(_x, _y);
+		}
+		_x += 4;
+		Controller::showCursor(true);
+		Controller::gotoXY(_x, _y);
+	}
+	else
+	{
+		Controller::playSound(4);
+	}
+}
+
+void Game::moveLeft()
+{
+	if (_x > board->getXAt(0, 0))
+	{
+		if (board->getCheckAtXY(_x, _y) == 0)
+		{
+			Controller::gotoXY(_x, _y);
+		}
+		_x -= 4;
+		Controller::showCursor(true);
+		Controller::gotoXY(_x, _y);
+	}
+	else
+	{
+		Controller::playSound(4);
+	}
+}
+
+void Game::moveDown()
+{
+	if (_y < board->getYAt(board->getSize() - 1, board->getSize() - 1))
+	{
+		if (board->getCheckAtXY(_x, _y) == 0)
+		{
+			Controller::gotoXY(_x, _y);
+		}
+		_y += 2;
+		Controller::showCursor(true);
+		Controller::gotoXY(_x, _y);
+	}
+	else
+	{
+		Controller::playSound(4);
 	}
 }
 
@@ -46,48 +116,23 @@ void Game::moveUp()
 		if (board->getCheckAtXY(_x, _y) == 0)
 		{
 			Controller::gotoXY(_x, _y);
-			putchar(32);
 		}
 		_y -= 2;
+		Controller::showCursor(true);
 		Controller::gotoXY(_x, _y);
+	}
+	else
+	{
+		Controller::playSound(4);
 	}
 }
-void Game::moveDown()
+
+void Game::printInterface()
 {
-	if (_y < board->getYAt(board->getSize() - 1, board->getSize() - 1))
-	{
-		if (board->getCheckAtXY(_x, _y) == 0)
-		{
-			Controller::gotoXY(_x, _y);
-			putchar(32);
-		}
-		_y += 2;
-		Controller::gotoXY(_x, _y);
-	}
-}
-void Game::moveLeft()
-{
-	if (_x > board->getXAt(0, 0))
-	{
-		if (board->getCheckAtXY(_x, _y) == 0)
-		{
-			Controller::gotoXY(_x, _y);
-			putchar(32);
-		}
-		_x -= 4;
-		Controller::gotoXY(_x, _y);
-	}
-}
-void Game::moveRight()
-{
-	if (_x < board->getXAt(board->getSize() - 1, board->getSize() - 1))
-	{
-		if (board->getCheckAtXY(_x, _y) == 0)
-		{
-			Controller::gotoXY(_x, _y);
-			putchar(32);
-		}
-		_x += 4;
-		Controller::gotoXY(_x, _y);
-	}
+	board->showBoard();
+	board->buildBoardData();
+	board->renderBoard();
+	Controller::setConsoleColor(BRIGHT_WHITE, YELLOW);
+	Controller::gotoXY(91, 28);
+	cout << "Esc : Exit";
 }

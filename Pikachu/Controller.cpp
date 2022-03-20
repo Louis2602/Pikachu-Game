@@ -10,7 +10,7 @@ void Controller::setUpConsole()
 	disableMaximize();
 	setConsoleTitle();
 	hideScrollBars();
-	showCursor(false);
+	showCursor(true);
 	disableMouseInput();
 }
 
@@ -119,4 +119,11 @@ int Controller::getConsoleInput()
 		else
 			return 0;                 //nút khác
 	}
+}
+
+void Controller::playSound(int i)
+{
+	static vector<const wchar_t*> soundFile{ L"moveO.wav", L"moveX.wav",
+		L"move.wav", L"enter.wav", L"error.wav", L"placed.wav", L"win.wav", L"lose.wav",  L"background.wav", L"effect.wav" };
+	PlaySound(soundFile[i], NULL, SND_FILENAME | SND_ASYNC);
 }

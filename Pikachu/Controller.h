@@ -1,9 +1,9 @@
 ﻿#pragma once
-#ifndef CONTROLLER_H
-#define CONTROLLER_H
 
 #include <Windows.h>
 #include <conio.h>
+#include <vector>
+#pragma comment(lib, "Winmm.lib")
 
 // COLOR CODE
 #define BLACK 0
@@ -37,8 +37,8 @@ private:
 	static HWND consoleWindow;    //Con trỏ xử lí cửa sổ console
 	static HANDLE consoleOutput;  //Con trỏ xử lí output console
 public:
-	Controller() {} // constructor
-	~Controller() {} // destructor
+	Controller() {}								// constructor
+	~Controller() {}							// destructor
 	static void setUpConsole();               //Thiết lập cửa sổ console
 	static void gotoXY(int, int);			  //Di chuyển con trỏ đến vị trí x,y
 	static void setAndCenterWindow();         //Căn giữa và thiết lập độ phân giải màn hình console
@@ -51,9 +51,6 @@ public:
 	static void clearConsole();               //Xóa màn hình console
 	static void disableMouseInput();          //Vô hiệu hóa chuột trong console
 	static int getConsoleInput();             //Lấy lệnh từ bàn phím
-	// static void playSound(int);               //Phát âm thanh
-};
-
-
-#endif 
+	static void playSound(int);               //Phát âm thanh
+}; 
 
