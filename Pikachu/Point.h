@@ -8,13 +8,15 @@ private:
 	char _pokemon = ' ';
 public:
 	Point();			//Phương thức tạo lập
-	Point(int, int, char);	//Phương thức tạo lập
+	Point(int, int, int, char);	//Phương thức tạo lập
+
 	int getX();			//Lấy vị trí x
 	int getY();			//Lấy vị trí y
 	int getCheck();		//Lấy quân cờ
+
 	void setX(int);		//Gán vị trí x
 	void setY(int);		//Gán vị trí y
-	bool setCheck(int);	//Gán quân cờ
+	void setCheck(int);	//Gán quân cờ
 
 	char getPokemons();
 	void setPokemons(char);

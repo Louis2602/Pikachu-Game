@@ -13,7 +13,7 @@ private:
 	int size;						// Size of the board
 	int left, top;					// Board Coordinate
 	Point** pBoard;					// Board position array
-	int* pokemons;
+	int** pokemons;
 public:
 	BoardView(int, int, int);			
 	~BoardView();
@@ -27,4 +27,5 @@ public:
 	void showBoard();
 	void renderBoard();
 	void buildBoardData();
+
 };

@@ -20,7 +20,7 @@ void Game::startGame()
 	_x = board->getXAt(0, 0);
 	_y = board->getYAt(0, 0);
 	Controller::gotoXY(_x, _y);
-	Controller::setConsoleColor(BRIGHT_WHITE, GREEN);
+
 	while (!isPlaying) {
 		switch (Controller::getConsoleInput())
 		{
@@ -53,7 +53,7 @@ void Game::startGame()
 }
 void Game::processCheckBoard()
 {
-	Controller::setConsoleColor(BRIGHT_WHITE, RED);
+	
 }
 void Game::moveRight()
 {

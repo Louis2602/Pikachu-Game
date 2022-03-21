@@ -2,7 +2,9 @@
 
 BoardView::BoardView(int psize, int pX, int pY) : size(psize), left(pX), top(pY)
 {
-	pokemons = new int[size * size];
+	pokemons = new int*[size];
+	for (int i = 0; i < psize; i++)
+		pokemons[i] = new int[size];
 	pBoard = new Point * [psize];
 	for (int i = 0; i < psize; i++)
 		pBoard[i] = new Point[psize];
@@ -148,6 +150,7 @@ void BoardView::renderBoard() {
 			pBoard[i][j].setY(2 * i + top + 1); // y-value of boardgame
 			pBoard[i][j].setCheck(0);
 
+			Controller::gotoXY(pBoard[i][j].getX(), pBoard[i][j].getY());
 			putchar(pBoard[i][j].getPokemons());
 
 		}
@@ -155,39 +158,13 @@ void BoardView::renderBoard() {
 }
 
 void BoardView::buildBoardData() {
-	srand(time(NULL));
-
-	bool* checkDuplicate = new bool[size * size];
-	int* pos = new int[size * size];
-
 	//Build random character pair
-	for (int i = 0; i < size * size; i += 2)
-		if (i / 2 > 25)
-			pokemons[i] = pokemons[i + 1] = rand() % 26 + 'A';
-		else
-			pokemons[i] = pokemons[i + 1] = i / 2 + 'A';
 
-	//Build position array
-	for (int i = 0; i < size * size; i++) checkDuplicate[i] = 0;
-	for (int i = 0; i < size * size; i++) {
-		int tmp = 0;
+	for (int i = 0; i < size; i++) {
+		for (int j = 0; j < size; j++) {
+			pokemons[i][j] = rand() % 26 + 'A';
 
-		do {
-			tmp = rand() % (size * size);
-		} while (checkDuplicate[tmp]);
-
-		checkDuplicate[tmp] = 1;
-		pos[i] = tmp;
+			pBoard[i][j].setPokemons(pokemons[i][j]);
+		}
 	}
-
-
-	//Build table
-	for (int i = 0; i < size * size; i++) {
-		int r = pos[i] / size;
-		int c = pos[i] % size;
-		pBoard[r][c].setPokemons(pokemons[i]);
-	}
-	
-	delete[] pos;
-	delete[] checkDuplicate;
 }
