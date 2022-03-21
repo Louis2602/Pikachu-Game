@@ -23,6 +23,9 @@ public:
 	int getXAt(int, int);			//Lấy tọa độ x tại ô
 	int getYAt(int, int);			//Lấy tọa độ y tại ô
 	int getCheckAtXY(int, int);
+	int getRAt(int, int);			//Lấy tọa độ R (row) tại tọa độ x y
+	int getCAt(int, int);			//Lấy tọa độ C (column) tại tọa độ x y
+	char getPokemons(int, int);
 
 	void showBoard();
 	void renderBoard();

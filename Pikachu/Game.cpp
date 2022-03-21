@@ -59,12 +59,22 @@ void Game::moveRight()
 {
 	if (_x < board->getXAt(board->getSize() - 1, board->getSize() - 1))
 	{
+		//Đổi màu đen cho ô hiện tại
+		Controller::setConsoleColor(BRIGHT_WHITE, BLACK);
+		putchar(board->getPokemons(_x, _y));
+		Controller::gotoXY(_x, _y);
+
 		if (board->getCheckAtXY(_x, _y) == 0)
 		{
 			Controller::gotoXY(_x, _y);
 		}
 		_x += 4;
 		Controller::showCursor(true);
+		Controller::gotoXY(_x, _y);
+
+		//Đổi màu xanh cho ô hiện tại
+		Controller::setConsoleColor(BRIGHT_WHITE, GREEN);
+		putchar(board->getPokemons(_x,_y));
 		Controller::gotoXY(_x, _y);
 	}
 	else
@@ -77,12 +87,22 @@ void Game::moveLeft()
 {
 	if (_x > board->getXAt(0, 0))
 	{
+		//Đổi màu đen cho ô hiện tại
+		Controller::setConsoleColor(BRIGHT_WHITE, BLACK);
+		putchar(board->getPokemons(_x, _y));
+		Controller::gotoXY(_x, _y);
+
 		if (board->getCheckAtXY(_x, _y) == 0)
 		{
 			Controller::gotoXY(_x, _y);
 		}
 		_x -= 4;
 		Controller::showCursor(true);
+		Controller::gotoXY(_x, _y);
+
+		//Đổi màu xanh cho ô hiện tại
+		Controller::setConsoleColor(BRIGHT_WHITE, GREEN);
+		putchar(board->getPokemons(_x, _y));
 		Controller::gotoXY(_x, _y);
 	}
 	else
@@ -95,12 +115,22 @@ void Game::moveDown()
 {
 	if (_y < board->getYAt(board->getSize() - 1, board->getSize() - 1))
 	{
+		//Đổi màu đen cho ô hiện tại
+		Controller::setConsoleColor(BRIGHT_WHITE, BLACK);
+		putchar(board->getPokemons(_x, _y));
+		Controller::gotoXY(_x, _y);
+
 		if (board->getCheckAtXY(_x, _y) == 0)
 		{
 			Controller::gotoXY(_x, _y);
 		}
 		_y += 2;
 		Controller::showCursor(true);
+		Controller::gotoXY(_x, _y);
+
+		//Đổi màu xanh cho ô hiện tại
+		Controller::setConsoleColor(BRIGHT_WHITE, GREEN);
+		putchar(board->getPokemons(_x, _y));
 		Controller::gotoXY(_x, _y);
 	}
 	else
@@ -113,12 +143,22 @@ void Game::moveUp()
 {
 	if (_y > board->getYAt(0, 0))
 	{
+		//Đổi màu đen cho ô hiện tại
+		Controller::setConsoleColor(BRIGHT_WHITE, BLACK);
+		putchar(board->getPokemons(_x, _y));
+		Controller::gotoXY(_x, _y);
+
 		if (board->getCheckAtXY(_x, _y) == 0)
 		{
 			Controller::gotoXY(_x, _y);
 		}
 		_y -= 2;
 		Controller::showCursor(true);
+		Controller::gotoXY(_x, _y);
+
+		//Đổi màu xanh cho ô hiện tại
+		Controller::setConsoleColor(BRIGHT_WHITE, GREEN);
+		putchar(board->getPokemons(_x, _y));
 		Controller::gotoXY(_x, _y);
 	}
 	else
@@ -135,4 +175,9 @@ void Game::printInterface()
 	Controller::setConsoleColor(BRIGHT_WHITE, YELLOW);
 	Controller::gotoXY(91, 28);
 	cout << "Esc : Exit";
+}
+
+char Game::getPokemons(int x, int y)
+{
+	return board->getPokemons(x, y);
 }

@@ -26,4 +26,6 @@ public:
 	void moveLeft();
 	void moveUp();
 	void moveDown();
+
+	char getPokemons(int x, int y);
 };

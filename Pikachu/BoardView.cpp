@@ -43,6 +43,21 @@ int BoardView::getYAt(int i, int j)
 	return pBoard[i][j].getY();
 }
 
+int BoardView::getRAt(int x, int y)
+{
+	return (y - 1 - top) / 2;
+}
+
+int BoardView::getCAt(int x, int y)
+{
+	return (x - 3 - left) / 4;
+}
+
+char BoardView::getPokemons(int x, int y)
+{
+	return pBoard[getRAt(x,y)][getCAt(x,y)].getPokemons();
+}
+
 int BoardView::getCheckAtXY(int pX, int pY)
 {
 	for (int i = 0; i < size; i++)
