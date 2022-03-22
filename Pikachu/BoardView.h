@@ -4,6 +4,7 @@
 #include <iostream>
 #include <ctime>
 #include <vector>
+#include <algorithm>
 
 using namespace std;
 
@@ -26,9 +27,15 @@ public:
 	int getRAt(int, int);			//Lấy tọa độ R (row) tại tọa độ x y
 	int getCAt(int, int);			//Lấy tọa độ C (column) tại tọa độ x y
 	char getPokemons(int, int);
+	int getCheck(int, int);
 
 	void showBoard();
 	void renderBoard();
 	void buildBoardData();
 
+	void selectedBlock(int, int);
+	void UnselectedBlock(int, int);
+	
+	void lockBlock(int, int);
+	void deleteBlock(int, int);
 };

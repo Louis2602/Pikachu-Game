@@ -23,8 +23,8 @@ void Controller::setAndCenterWindow()
 {
 	RECT rectClient, rectWindow;
 	GetClientRect(consoleWindow, &rectClient), GetWindowRect(consoleWindow, &rectWindow);
-	int width = 1216;
-	int height = 784;
+	int width = 1280;
+	int height = 900;
 	int posX = (GetSystemMetrics(SM_CXSCREEN) - width) / 2,
 		posY = (GetSystemMetrics(SM_CYSCREEN) - height) / 2;
 	MoveWindow(consoleWindow, posX, posY, width, height, TRUE);
@@ -59,6 +59,7 @@ void Controller::showCursor(bool show)
 
 void Controller::setFontInfo()
 {
+	// 12 - 24
 	CONSOLE_FONT_INFOEX info;
 	info.cbSize = sizeof(info);
 	GetCurrentConsoleFontEx(consoleOutput, FALSE, &info);

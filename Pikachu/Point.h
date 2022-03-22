@@ -1,10 +1,15 @@
 ﻿#pragma once
+
+#define _NORMAL 0
+#define _LOCK 1
+#define _DELETE -1
+
 class Point
 {
 private:
-	int _x;				//Vị trí x
-	int _y;				//Vị trí y
-	int _check;			//quân cờ trên ô, 1: X, 0: trống, -1: O
+	int _x = 0;					//Vị trí x
+	int _y = 0;					//Vị trí y
+	int _check = 0;			//1: LOCK, 0: NORMAL, -1: DELETE
 	char _pokemon = ' ';
 public:
 	Point();			//Phương thức tạo lập
