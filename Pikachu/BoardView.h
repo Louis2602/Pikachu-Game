@@ -34,7 +34,7 @@ public:
 	void buildBoardData();
 
 	void selectedBlock(int, int);
-	void UnselectedBlock(int, int);
+	void unselectedBlock(int, int);
 	
 	void lockBlock(int, int);
 	void deleteBlock(int, int);

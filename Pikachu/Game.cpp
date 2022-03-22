@@ -74,7 +74,7 @@ void Game::moveRight()
 		putchar(board->getPokemons(_x, _y));
 		Controller::gotoXY(_x, _y);*/
 		if (board->getCheck(_x, _y) != _LOCK && board->getCheck(_x, _y) != _DELETE) {
-			board->UnselectedBlock(_x, _y);
+			board->unselectedBlock(_x, _y);
 		}
 		Controller::gotoXY(_x, _y);
 
@@ -111,7 +111,7 @@ void Game::moveLeft()
 		putchar(board->getPokemons(_x, _y));
 		Controller::gotoXY(_x, _y);*/
 		if (board->getCheck(_x, _y) != _LOCK && board->getCheck(_x, _y) != _DELETE) {
-			board->UnselectedBlock(_x, _y);
+			board->unselectedBlock(_x, _y);
 		}
 
 		if (board->getCheckAtXY(_x, _y) == 0)
@@ -143,7 +143,7 @@ void Game::moveDown()
 		putchar(board->getPokemons(_x, _y));
 		Controller::gotoXY(_x, _y);*/
 		if (board->getCheck(_x, _y) != _LOCK && board->getCheck(_x, _y) != _DELETE) {
-			board->UnselectedBlock(_x, _y);
+			board->unselectedBlock(_x, _y);
 		}
 
 		if (board->getCheckAtXY(_x, _y) == 0)
@@ -175,7 +175,7 @@ void Game::moveUp()
 		putchar(board->getPokemons(_x, _y));
 		Controller::gotoXY(_x, _y);*/
 		if (board->getCheck(_x, _y) != _LOCK && board->getCheck(_x, _y) != _DELETE) {
-			board->UnselectedBlock(_x, _y);
+			board->unselectedBlock(_x, _y);
 		}
 
 		if (board->getCheckAtXY(_x, _y) == 0)
@@ -242,7 +242,7 @@ void Game::deleteBlock() {
 	_lockedBlock = 0;
 	if (!checkMatchedPokemons(_lockedBlockPair[0], _lockedBlockPair[1])) {
 		for (auto block : _lockedBlockPair)
-			board->UnselectedBlock(block.first, block.second);
+			board->unselectedBlock(block.first, block.second);
 		_lockedBlockPair.clear();
 		board->selectedBlock(_x, _y);
 		return;

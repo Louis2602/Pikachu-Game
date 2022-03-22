@@ -233,7 +233,7 @@ void BoardView::selectedBlock(int x, int y) {
 	Controller::gotoXY(x, y);
 }
 
-void BoardView::UnselectedBlock(int x, int y) {
+void BoardView::unselectedBlock(int x, int y) {
 	int r = getRAt(x, y);
 	int c = getCAt(x, y);
 	pBoard[r][c].setCheck(_NORMAL);
