@@ -30,6 +30,13 @@
 #define KEY_RIGHT 77
 #define KEY_ESC 27
 
+// SOUNDTRACK
+#define MOVE_SOUND 0
+#define ENTER_SOUND 1
+#define ERROR_SOUND 2
+#define WIN_SOUND 4
+#define LOSE_SOUND 5
+
 using namespace std;
 
 class Controller {

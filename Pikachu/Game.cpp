@@ -24,9 +24,6 @@ void Game::startGame()
 	_x = board->getXAt(0, 0);
 	_y = board->getYAt(0, 0);
 	Controller::gotoXY(_x, _y);
-	/*Controller::setConsoleColor(BRIGHT_WHITE, BLACK);
-	putchar(board->getPokemons(0, 0));
-	Controller::gotoXY(_x, _y);*/
 	board->selectedBlock(_x, _y);
 	putchar(board->getPokemons(_x, _y));
 	Controller::gotoXY(_x, _y);
@@ -34,7 +31,7 @@ void Game::startGame()
 		switch (Controller::getConsoleInput())
 		{
 		case 0:
-			Controller::playSound(4);
+			Controller::playSound(ERROR_SOUND);
 			break;
 		case 1:
 			Controller::showCursor(false);
@@ -54,13 +51,20 @@ void Game::startGame()
 			moveDown();
 			break;
 		case 6:
-			Controller::playSound(3);
 			lockBlock();
 			break;
 		}
 	}
-	Controller::setConsoleColor(BLACK, WHITE);
-	Controller::clearConsole();
+	if (checkWin()) {
+		Controller::playSound(WIN_SOUND);
+		Controller::setConsoleColor(BLACK, WHITE);
+		Controller::clearConsole();
+	}
+	else {
+		Controller::playSound(LOSE_SOUND);
+		Controller::setConsoleColor(BLACK, WHITE);
+		Controller::clearConsole();
+	}
 	isPlaying = false;
 	_remainBlocks = _mode * _mode;
 }
@@ -69,14 +73,10 @@ void Game::moveRight()
 {
 	if (_x < board->getXAt(board->getSize() - 1, board->getSize() - 1))
 	{
-		//Đổi màu đen cho ô hiện tại
-		/*Controller::setConsoleColor(BRIGHT_WHITE, BLACK);
-		putchar(board->getPokemons(_x, _y));
-		Controller::gotoXY(_x, _y);*/
+		Controller::playSound(MOVE_SOUND);
 		if (board->getCheck(_x, _y) != _LOCK && board->getCheck(_x, _y) != _DELETE) {
 			board->unselectedBlock(_x, _y);
 		}
-		Controller::gotoXY(_x, _y);
 
 		if (board->getCheckAtXY(_x, _y) == 0)
 		{
@@ -86,19 +86,12 @@ void Game::moveRight()
 		Controller::showCursor(true);
 		Controller::gotoXY(_x, _y);
 
-		//Đổi màu xanh cho ô hiện tại
-		/*Controller::setConsoleColor(BRIGHT_WHITE, GREEN);
-		putchar(board->getPokemons(_x,_y));
-		Controller::gotoXY(_x, _y);*/
 		if (board->getCheck(_x, _y) != _LOCK && board->getCheck(_x, _y) != _DELETE) {
 			board->selectedBlock(_x, _y);
 		}
-		Controller::gotoXY(_x, _y);
 	}
 	else
-	{
-		Controller::playSound(4);
-	}
+		Controller::playSound(ERROR_SOUND);
 	
 }
 
@@ -106,10 +99,7 @@ void Game::moveLeft()
 {
 	if (_x > board->getXAt(0, 0))
 	{
-		//Đổi màu đen cho ô hiện tại
-		/*Controller::setConsoleColor(BRIGHT_WHITE, BLACK);
-		putchar(board->getPokemons(_x, _y));
-		Controller::gotoXY(_x, _y);*/
+		Controller::playSound(MOVE_SOUND);
 		if (board->getCheck(_x, _y) != _LOCK && board->getCheck(_x, _y) != _DELETE) {
 			board->unselectedBlock(_x, _y);
 		}
@@ -122,26 +112,19 @@ void Game::moveLeft()
 		Controller::showCursor(true);
 		Controller::gotoXY(_x, _y);
 
-		//Đổi màu xanh cho ô hiện tại
-		//Controller::setConsoleColor(BRIGHT_WHITE, GREEN);
 		if (board->getCheck(_x, _y) != _LOCK && board->getCheck(_x, _y) != _DELETE) {
 			board->selectedBlock(_x, _y);
 		}
 	}
 	else
-	{
-		Controller::playSound(4);
-	}
+		Controller::playSound(ERROR_SOUND);
 }
 
 void Game::moveDown()
 {
 	if (_y < board->getYAt(board->getSize() - 1, board->getSize() - 1))
 	{
-		//Đổi màu đen cho ô hiện tại
-		/*Controller::setConsoleColor(BRIGHT_WHITE, BLACK);
-		putchar(board->getPokemons(_x, _y));
-		Controller::gotoXY(_x, _y);*/
+		Controller::playSound(MOVE_SOUND);
 		if (board->getCheck(_x, _y) != _LOCK && board->getCheck(_x, _y) != _DELETE) {
 			board->unselectedBlock(_x, _y);
 		}
@@ -154,26 +137,19 @@ void Game::moveDown()
 		Controller::showCursor(true);
 		Controller::gotoXY(_x, _y);
 
-		//Đổi màu xanh cho ô hiện tại
-		/*Controller::setConsoleColor(BRIGHT_WHITE, GREEN);*/
 		if (board->getCheck(_x, _y) != _LOCK && board->getCheck(_x, _y) != _DELETE) {
 			board->selectedBlock(_x, _y);
 		}
 	}
 	else
-	{
-		Controller::playSound(4);
-	}
+		Controller::playSound(ERROR_SOUND);
 }
 
 void Game::moveUp()
 {
 	if (_y > board->getYAt(0, 0))
 	{
-		//Đổi màu đen cho ô hiện tại
-		/*Controller::setConsoleColor(BRIGHT_WHITE, BLACK);
-		putchar(board->getPokemons(_x, _y));
-		Controller::gotoXY(_x, _y);*/
+		Controller::playSound(MOVE_SOUND);
 		if (board->getCheck(_x, _y) != _LOCK && board->getCheck(_x, _y) != _DELETE) {
 			board->unselectedBlock(_x, _y);
 		}
@@ -186,16 +162,12 @@ void Game::moveUp()
 		Controller::showCursor(true);
 		Controller::gotoXY(_x, _y);
 
-		//Đổi màu xanh cho ô hiện tại
-		//Controller::setConsoleColor(BRIGHT_WHITE, GREEN);
 		if (board->getCheck(_x, _y) != _LOCK && board->getCheck(_x, _y) != _DELETE) {
 			board->selectedBlock(_x, _y);
 		}
 	}
 	else
-	{
-		Controller::playSound(4);
-	}
+		Controller::playSound(ERROR_SOUND);
 }
 
 void Game::printInterface()
@@ -215,6 +187,7 @@ char Game::getPokemons(int x, int y)
 
 void Game::lockBlock()
 {
+	Controller::playSound(ENTER_SOUND);
 	if (board->getCheck(_x, _y) == _LOCK || board->getCheck(_x, _y) == _DELETE) {
 		return;
 	}
@@ -254,7 +227,8 @@ void Game::deleteBlock() {
 }
 
 bool Game::checkWin() {
-	if (_remainBlocks == 0)
+	if (_remainBlocks == 0) {
 		return 1;
+	}
 	return 0;
 }

@@ -182,7 +182,7 @@ void BoardView::renderBoard() {
 }
 
 void BoardView::buildBoardData() {
-	srand(time(NULL));
+	srand((unsigned int)time(NULL));
 
 	bool* checkDuplicate = new bool[size * size];
 	int* pos = new int[size * size];
@@ -195,14 +195,13 @@ void BoardView::buildBoardData() {
 	}
 
 	// Random pokemons position 
-	for (int i = 0; i < size * size; i++) checkDuplicate[i] = 0;
+	for (int i = 0; i < size * size; i++) 
+		checkDuplicate[i] = 0;
 	for (int i = 0; i < size * size; i++) {
 		int tmp = 0;
-
 		do {
 			tmp = rand() % (size * size);
 		} while (checkDuplicate[tmp]);
-
 		checkDuplicate[tmp] = 1;
 		pos[i] = tmp;
 	}

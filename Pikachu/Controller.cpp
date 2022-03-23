@@ -85,6 +85,7 @@ void Controller::disableMouseInput()
 int Controller::getConsoleInput()
 {
 	int c = _getch();
+	// Arrow key
 	if (c == 0 || c == 224)
 	{
 		switch (_getch())
@@ -124,7 +125,6 @@ int Controller::getConsoleInput()
 
 void Controller::playSound(int i)
 {
-	static vector<const wchar_t*> soundFile{ L"moveO.wav", L"moveX.wav",
-		L"move.wav", L"enter.wav", L"error.wav", L"placed.wav", L"win.wav", L"lose.wav",  L"background.wav", L"effect.wav" };
+	static vector<const wchar_t*> soundFile{L"move.wav", L"enter.wav", L"error.wav", L"placed.wav", L"win.wav", L"lose.wav",  L"background.wav", L"effect.wav" };
 	PlaySound(soundFile[i], NULL, SND_FILENAME | SND_ASYNC);
 }
