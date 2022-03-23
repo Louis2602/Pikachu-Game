@@ -206,14 +206,68 @@ bool Game::checkMatchedPokemons(pair<int, int> firstBlock, pair<int, int> second
 	return (board->getPokemons(firstBlock.first, firstBlock.second) == board->getPokemons(secondBlock.first, secondBlock.second));
 }
 
+bool Game::checkIMatching(pair<int, int> firstBlock, pair<int, int> secondBlock)
+{
+	// check line y -> check value of x
+	int minX = min(firstBlock.first, secondBlock.first);
+	int maxX = max(firstBlock.first, secondBlock.first);
+	if (firstBlock.second == secondBlock.second) {
+		for (int i = minX + 8; i < maxX; i += 8) {
+			if (board->getCheck(i, firstBlock.second) != _DELETE) {
+				return 0;
+			}
+		}
+		return 1;
+	}
+	// check line x -> check value of y
+	int minY = min(firstBlock.second, secondBlock.second);
+	int maxY = max(firstBlock.second, secondBlock.second);
+
+	if (firstBlock.first == secondBlock.first) {
+		for (int i = minY + 4; i < maxY; i += 4) {
+			if (board->getCheck(firstBlock.first, i) != _DELETE) {
+				return 0;
+			}
+		}
+		return 1;
+	}
+}
+
+bool Game::checkLMatching(pair<int, int> firstBlock, pair<int, int> secondBlock)
+{
+	int minX = min(firstBlock.first, secondBlock.first);
+	int y;
+	if (minX == firstBlock.first)
+		y = firstBlock.second;
+	else y = secondBlock.second;
+	
+	return 0;
+}
+bool Game::checkUMatching(pair<int, int> firstBlock, pair<int, int> secondBlock)
+{
+
+	return 0;
+}
+bool Game::checkZMatching(pair<int, int> firstBlock, pair<int, int> secondBlock)
+{
+	return 0;
+
+}
+
+
 bool Game::checkMatching(pair<int, int> firstBlock, pair<int, int> secondBlock)
 {
 	if (!checkMatchedPokemons(firstBlock, secondBlock)) 
 		return 0;
+	else {
+		if (checkIMatching(firstBlock, secondBlock))
+			return 1;
+		else return 0;
+	}
 }
 void Game::deleteBlock() {
 	_lockedBlock = 0;
-	if (!checkMatchedPokemons(_lockedBlockPair[0], _lockedBlockPair[1])) {
+	if (!checkMatching(_lockedBlockPair[0], _lockedBlockPair[1])) {
 		for (auto block : _lockedBlockPair)
 			board->unselectedBlock(block.first, block.second);
 		_lockedBlockPair.clear();
