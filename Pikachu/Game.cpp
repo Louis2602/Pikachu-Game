@@ -55,16 +55,8 @@ void Game::startGame()
 			break;
 		}
 	}
-	if (checkWin()) {
-		Controller::playSound(WIN_SOUND);
-		Controller::setConsoleColor(BLACK, WHITE);
-		Controller::clearConsole();
-	}
-	else {
-		Controller::playSound(LOSE_SOUND);
-		Controller::setConsoleColor(BLACK, WHITE);
-		Controller::clearConsole();
-	}
+	Controller::setConsoleColor(BLACK, WHITE);
+	Controller::clearConsole();
 	isPlaying = false;
 	_remainBlocks = _mode * _mode;
 }
@@ -209,10 +201,10 @@ bool Game::checkMatchedPokemons(pair<int, int> firstBlock, pair<int, int> second
 bool Game::checkIMatching(pair<int, int> firstBlock, pair<int, int> secondBlock)
 {
 	// check line y -> check value of x
-	int minX = min(firstBlock.first, secondBlock.first);
-	int maxX = max(firstBlock.first, secondBlock.first);
 	if (firstBlock.second == secondBlock.second) {
-		for (int i = minX + 8; i < maxX; i += 8) {
+		if (firstBlock.first > secondBlock.first)
+			swap(firstBlock, secondBlock);
+		for (int i = firstBlock.first + 8; i < secondBlock.first; i += 8) {
 			if (board->getCheck(i, firstBlock.second) != _DELETE) {
 				return 0;
 			}
@@ -220,50 +212,58 @@ bool Game::checkIMatching(pair<int, int> firstBlock, pair<int, int> secondBlock)
 		return 1;
 	}
 	// check line x -> check value of y
-	int minY = min(firstBlock.second, secondBlock.second);
-	int maxY = max(firstBlock.second, secondBlock.second);
-
 	if (firstBlock.first == secondBlock.first) {
-		for (int i = minY + 4; i < maxY; i += 4) {
+		if (firstBlock.second > secondBlock.second)
+			swap(firstBlock, secondBlock);
+		for (int i = firstBlock.second + 4; i < secondBlock.second; i += 4) {
 			if (board->getCheck(firstBlock.first, i) != _DELETE) {
 				return 0;
 			}
 		}
 		return 1;
 	}
+	return 0;
 }
 
 bool Game::checkLMatching(pair<int, int> firstBlock, pair<int, int> secondBlock)
 {
-	int minX = min(firstBlock.first, secondBlock.first);
-	int y;
-	if (minX == firstBlock.first)
-		y = firstBlock.second;
-	else y = secondBlock.second;
+	if (firstBlock.first > secondBlock.first)
+		swap(firstBlock, secondBlock);
+
+	pair<int, int> Lcorner;
+	Lcorner.first = firstBlock.first;
+	Lcorner.second = secondBlock.second;
+	if (board->getCheck(Lcorner.first, Lcorner.second) == _DELETE) {
+		if (checkIMatching(Lcorner, secondBlock) && checkIMatching(Lcorner, firstBlock))
+			return 1;
+	}
 	
+	Lcorner.first = secondBlock.first;
+	Lcorner.second = firstBlock.second;
+	if (board->getCheck(Lcorner.first, Lcorner.second) == _DELETE) {
+		if (checkIMatching(firstBlock, Lcorner) && checkIMatching(secondBlock, Lcorner))
+			return 1;
+	}
 	return 0;
 }
 bool Game::checkUMatching(pair<int, int> firstBlock, pair<int, int> secondBlock)
 {
-
 	return 0;
 }
 bool Game::checkZMatching(pair<int, int> firstBlock, pair<int, int> secondBlock)
 {
 	return 0;
-
 }
-
 
 bool Game::checkMatching(pair<int, int> firstBlock, pair<int, int> secondBlock)
 {
-	if (!checkMatchedPokemons(firstBlock, secondBlock)) 
+	if (!checkMatchedPokemons(firstBlock, secondBlock))
 		return 0;
-	else {
-		if (checkIMatching(firstBlock, secondBlock))
-			return 1;
-		else return 0;
-	}
+	if (checkIMatching(firstBlock, secondBlock))
+		return 1;
+	if (checkLMatching(firstBlock, secondBlock))
+		return 1;
+	return 0;
 }
 void Game::deleteBlock() {
 	_lockedBlock = 0;
@@ -274,15 +274,10 @@ void Game::deleteBlock() {
 		board->selectedBlock(_x, _y);
 		return;
 	}
+
 	_remainBlocks -= 2;
 	for (auto block : _lockedBlockPair)
 		board->deleteBlock(block.first, block.second);
 	_lockedBlockPair.clear();
 }
 
-bool Game::checkWin() {
-	if (_remainBlocks == 0) {
-		return 1;
-	}
-	return 0;
-}

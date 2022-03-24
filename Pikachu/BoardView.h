@@ -11,9 +11,9 @@ using namespace std;
 
 class BoardView {
 private:
-	int size;						// Size of the board
-	int left, top;					// Board Coordinate
-	Point** pBoard;					// Board position array
+	int size;						// Kích thước bàn cờ
+	int left, top;					// tọa độ góc trên bàn cờ
+	Point** pBoard;					// Mảng tọa độ ô cờ
 	int** pokemons;
 public:
 	BoardView(int, int, int);			
