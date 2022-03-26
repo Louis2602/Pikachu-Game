@@ -10,15 +10,16 @@
 
 using namespace std;
 
-class Game {
-private:
+struct Game {
 	BoardView* board;				// Create new board
 	int _mode;
 	int _x, _y;
 	bool isPlaying;
 	int _lockedBlock;
 	int _remainBlocks;
-	vector<pair<int, int> > _lockedBlockPair; //First: row - Second: column
+
+	vector<pair<int, int>> _lockedBlockPair; //First: row - Second: column
+
 	bool checkMatchedPokemons(pair<int, int>, pair<int, int>);
 	bool checkIMatching(pair<int, int>, pair<int, int>);
 	bool checkLMatching(pair<int, int>, pair<int, int>);
@@ -26,10 +27,9 @@ private:
 	bool checkUMatching(pair<int, int>, pair<int, int>);
 	bool checkMatching(pair<int, int>, pair<int, int>);
 
-	//bool checkWin();
-public:
 	Game(int);
 	~Game();
+
 	void startGame();
 	void printInterface();
 

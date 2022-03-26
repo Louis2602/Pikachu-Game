@@ -4,14 +4,12 @@
 #define _LOCK 1
 #define _DELETE -1
 
-class Point
+struct Point
 {
-private:
 	int _x = 0;					//Vị trí x
 	int _y = 0;					//Vị trí y
 	int _check = 0;			//1: LOCK, 0: NORMAL, -1: DELETE
 	char _pokemon = ' ';
-public:
 	Point();			//Phương thức tạo lập
 	Point(int, int, int, char);	//Phương thức tạo lập
 

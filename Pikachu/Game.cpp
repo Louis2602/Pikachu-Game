@@ -237,7 +237,7 @@ bool Game::checkLMatching(pair<int, int> firstBlock, pair<int, int> secondBlock)
 		if (checkIMatching(Lcorner, secondBlock) && checkIMatching(Lcorner, firstBlock))
 			return 1;
 	}
-	
+
 	Lcorner.first = secondBlock.first;
 	Lcorner.second = firstBlock.second;
 	if (board->getCheck(Lcorner.first, Lcorner.second) == _DELETE) {
@@ -246,23 +246,94 @@ bool Game::checkLMatching(pair<int, int> firstBlock, pair<int, int> secondBlock)
 	}
 	return 0;
 }
-bool Game::checkUMatching(pair<int, int> firstBlock, pair<int, int> secondBlock)
-{
-	return 0;
-}
+
 bool Game::checkZMatching(pair<int, int> firstBlock, pair<int, int> secondBlock)
 {
+	if (firstBlock.first > secondBlock.first)
+		swap(firstBlock, secondBlock);
+
+	pair<int, int> Zcorner1;
+	pair<int, int> Zcorner2;
+	
+	for (int i = firstBlock.first + 8; i < secondBlock.first; i += 8) {
+		if (board->getCheck(i, firstBlock.second) == _DELETE) {
+			if (board->getCheck(i, secondBlock.second) == _DELETE) {
+				Zcorner1.first = i;
+				Zcorner1.second = firstBlock.second;
+				Zcorner2.first = i;
+				Zcorner2.second = secondBlock.second;
+				if (checkIMatching(Zcorner1, Zcorner2) && checkIMatching(Zcorner2, secondBlock))
+					return 1;
+			}
+		}
+		else break;
+	}
+
+	if (firstBlock.second > secondBlock.second)
+		swap(firstBlock, secondBlock);
+	for (int i = firstBlock.second + 4; i < secondBlock.second; i += 4) {
+		if (board->getCheck(firstBlock.first, i) == _DELETE) {
+			if (board->getCheck(secondBlock.first, i) == _DELETE)
+			{
+				Zcorner1.first = firstBlock.first;
+				Zcorner1.second = i;
+				Zcorner2.first = secondBlock.first;
+				Zcorner2.second = i;
+				if (checkIMatching(Zcorner1, Zcorner2) && checkIMatching(Zcorner2, secondBlock))
+					return 1;
+			}
+		}
+		else break;
+	}
+	return 0;
+}
+bool Game::checkUMatching(pair<int, int> firstBlock, pair<int, int> secondBlock)
+{
+	pair<int, int> Ucorner1;
+	pair<int, int> Ucorner2;
+
+	if (firstBlock.first > secondBlock.first)
+		swap(firstBlock, secondBlock);
+
+
+	// check at left barrier
+	for (int i = firstBlock.first; i >= _x - 8; i -= 8) {
+		if (i == _x - 8) {
+			Ucorner2.first = _x;
+			Ucorner2.second = secondBlock.second;
+			if (checkIMatching(Ucorner2, secondBlock))
+				return 1;
+		}
+
+	}
 	return 0;
 }
 
 bool Game::checkMatching(pair<int, int> firstBlock, pair<int, int> secondBlock)
 {
-	if (!checkMatchedPokemons(firstBlock, secondBlock))
+	if (!checkMatchedPokemons(firstBlock, secondBlock)) {
 		return 0;
-	if (checkIMatching(firstBlock, secondBlock))
+	}
+	if (checkIMatching(firstBlock, secondBlock)) {
+		Controller::gotoXY(50, 0);
+		cout << 'I';
 		return 1;
-	if (checkLMatching(firstBlock, secondBlock))
+	}
+	if (checkLMatching(firstBlock, secondBlock)) {
+		Controller::gotoXY(50, 0);
+		cout << 'L';
 		return 1;
+	}
+	if (checkZMatching(firstBlock, secondBlock)) {
+		Controller::gotoXY(50, 0);
+		cout << 'Z';
+		return 1;
+	}
+	if (checkUMatching(firstBlock, secondBlock)) {
+		Controller::gotoXY(50, 0);
+		cout << 'U';
+		return 1;
+	}
 	return 0;
 }
 void Game::deleteBlock() {

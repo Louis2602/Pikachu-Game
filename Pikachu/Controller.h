@@ -1,9 +1,9 @@
 ﻿#pragma once
+#pragma comment(lib, "Winmm.lib")
 
 #include <Windows.h>
 #include <conio.h>
 #include <vector>
-#pragma comment(lib, "Winmm.lib")
 
 // COLOR CODE
 #define BLACK 0
@@ -39,13 +39,11 @@
 
 using namespace std;
 
-class Controller {
-private:
+struct Controller {
+	Controller() {};
+	~Controller() {};
 	static HWND consoleWindow;    //Con trỏ xử lí cửa sổ console
 	static HANDLE consoleOutput;  //Con trỏ xử lí output console
-public:
-	Controller() {}								// constructor
-	~Controller() {}							// destructor
 	static void setUpConsole();               //Thiết lập cửa sổ console
 	static void gotoXY(int, int);			  //Di chuyển con trỏ đến vị trí x,y
 	static void setAndCenterWindow();         //Căn giữa và thiết lập độ phân giải màn hình console

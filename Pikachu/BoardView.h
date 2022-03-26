@@ -9,15 +9,15 @@
 using namespace std;
 
 
-class BoardView {
-private:
+struct BoardView {
 	int size;						// Kích thước bàn cờ
 	int left, top;					// tọa độ góc trên bàn cờ
 	Point** pBoard;					// Mảng tọa độ ô cờ
 	int** pokemons;
-public:
+
 	BoardView(int, int, int);			
 	~BoardView();
+
 	int getSize();					//Lấy kích cỡ
 	int getLeft();					//Lấy tọa độ trái bắt đầu bàn cờ
 	int getTop();					//Lấy tọa độ trên bắt đầu bàn cờ

@@ -10,6 +10,6 @@
 int main()
 {
     Controller::setUpConsole();
-    Game g(_EASY);
+    Game g(_MEDIUM);
     g.startGame();
 }  
