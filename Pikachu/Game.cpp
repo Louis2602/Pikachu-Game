@@ -291,20 +291,86 @@ bool Game::checkUMatching(pair<int, int> firstBlock, pair<int, int> secondBlock)
 {
 	pair<int, int> Ucorner1;
 	pair<int, int> Ucorner2;
+	const int size = board->getSize();
+	const int x = board->getXAt(0, 0);
+	const int y = board->getYAt(0, 0);
+	
+	// Check at barrier
+	if ((firstBlock.first == x && secondBlock.first == x) || (firstBlock.first == x + (size - 1) * 8 && secondBlock.first == x + (size - 1) * 8)
+		|| (firstBlock.second == y && secondBlock.second == y) || (firstBlock.second == y + (size - 1) * 4 && secondBlock.second == y + (size - 1) * 4))
+		return 1;
+	
+	if (firstBlock.second > secondBlock.second)
+		swap(firstBlock, secondBlock);
 
+	// check U left-right
+	for (int i = x; i <= x + (size - 1) * 8; i+=8) {
+		Ucorner1.first = i;
+		Ucorner1.second = firstBlock.second;
+		Ucorner2.first = i;
+		Ucorner2.second = secondBlock.second;
+			
+		if (Ucorner1.first == firstBlock.first) {
+			if (board->getCheck(i, secondBlock.second) == _DELETE) {
+				if (checkIMatching(Ucorner1, firstBlock) && checkIMatching(Ucorner2, secondBlock) 
+					&& checkIMatching(Ucorner1, Ucorner2))
+					return 1;
+			}
+		}
+		if (Ucorner2.first == secondBlock.first) {
+			if (board->getCheck(i, firstBlock.second) == _DELETE) {
+				if (checkIMatching(Ucorner1, firstBlock) && checkIMatching(Ucorner2, secondBlock) 
+					&& checkIMatching(Ucorner1, Ucorner2))
+					return 1;
+			}
+		}
+		if (board->getCheck(Ucorner1.first, Ucorner1.second) == _DELETE) {
+			if (board->getCheck(Ucorner2.first, Ucorner2.second) == _DELETE) {
+				if (Ucorner1.first == x || Ucorner1.first == x + (size - 1) * 8) {
+					if (checkIMatching(Ucorner1, firstBlock) && checkIMatching(Ucorner2, secondBlock))
+						return 1;
+				}
+				if (checkIMatching(Ucorner1, firstBlock) && checkIMatching(Ucorner2, secondBlock) 
+					&& checkIMatching(Ucorner1, Ucorner2))
+					return 1;
+			}
+		}
+	}
+	// check U up-down
 	if (firstBlock.first > secondBlock.first)
 		swap(firstBlock, secondBlock);
 
+	for (int i = y; i <= y + (size - 1) * 4; i += 4) {
+		Ucorner1.first = firstBlock.first;
+		Ucorner1.second = i;
+		Ucorner2.first = secondBlock.first;
+		Ucorner2.second = i;
 
-	// check at left barrier
-	for (int i = firstBlock.first; i >= _x - 8; i -= 8) {
-		if (i == _x - 8) {
-			Ucorner2.first = _x;
-			Ucorner2.second = secondBlock.second;
-			if (checkIMatching(Ucorner2, secondBlock))
-				return 1;
+		if (Ucorner1.second == firstBlock.second) {
+			if (board->getCheck(secondBlock.first, i) == _DELETE) {
+				if (checkIMatching(Ucorner1, firstBlock) && checkIMatching(Ucorner2, secondBlock) 
+					&& checkIMatching(Ucorner1, Ucorner2))
+					return 1;
+			}
 		}
-
+		if (Ucorner2.second == secondBlock.second) {
+			if (board->getCheck(firstBlock.first, i) == _DELETE) {
+				if (checkIMatching(Ucorner1, firstBlock) && checkIMatching(Ucorner2, secondBlock) 
+					&& checkIMatching(Ucorner1, Ucorner2))
+					return 1;
+			}
+		}
+		if (board->getCheck(Ucorner1.first, Ucorner1.second) == _DELETE) {
+			if (board->getCheck(Ucorner2.first, Ucorner2.second) == _DELETE) {
+				if (Ucorner1.second == y || Ucorner1.second == y + (size - 1) * 4) {
+					if (checkIMatching(Ucorner1, firstBlock) && checkIMatching(Ucorner2, secondBlock))
+						return 1;
+				}
+				if (checkIMatching(Ucorner1, firstBlock) && checkIMatching(Ucorner2, secondBlock)
+					&& checkIMatching(Ucorner1, Ucorner2))
+					return 1;
+			}
+		}
 	}
 	return 0;
 }
