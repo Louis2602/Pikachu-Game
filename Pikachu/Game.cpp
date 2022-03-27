@@ -312,8 +312,7 @@ bool Game::checkUMatching(pair<int, int> firstBlock, pair<int, int> secondBlock)
 			
 		if (Ucorner1.first == firstBlock.first) {
 			if (board->getCheck(i, secondBlock.second) == _DELETE) {
-				if (checkIMatching(Ucorner1, firstBlock) && checkIMatching(Ucorner2, secondBlock) 
-					&& checkIMatching(Ucorner1, Ucorner2))
+				if (checkIMatching(Ucorner1, firstBlock) && checkIMatching(Ucorner2, secondBlock))
 					return 1;
 			}
 		}
@@ -348,8 +347,7 @@ bool Game::checkUMatching(pair<int, int> firstBlock, pair<int, int> secondBlock)
 
 		if (Ucorner1.second == firstBlock.second) {
 			if (board->getCheck(secondBlock.first, i) == _DELETE) {
-				if (checkIMatching(Ucorner1, firstBlock) && checkIMatching(Ucorner2, secondBlock) 
-					&& checkIMatching(Ucorner1, Ucorner2))
+				if (checkIMatching(Ucorner1, firstBlock) && checkIMatching(Ucorner2, secondBlock))
 					return 1;
 			}
 		}
