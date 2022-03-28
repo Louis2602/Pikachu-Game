@@ -91,7 +91,7 @@ void BoardView::showBoard()
 	{
 		Sleep(5);
 		if (i % 8 == 0)
-			putchar(209);
+			putchar(205);
 		else
 			putchar(205);
 	}
@@ -105,7 +105,7 @@ void BoardView::showBoard()
 		if (i % 4 != 0)
 			putchar(186);
 		else
-			putchar(182);
+			putchar(186);
 	}
 	Controller::gotoXY(size * 8 + left + 1, size * 4 + top);
 	putchar(188);
@@ -116,7 +116,7 @@ void BoardView::showBoard()
 		Controller::gotoXY(size * 8 + left - i + 1, size * 4 + top);
 		Sleep(5);
 		if (i % 8 == 0)
-			putchar(207);
+			putchar(205);
 		else
 			putchar(205);
 	}
@@ -131,7 +131,7 @@ void BoardView::showBoard()
 		if (i % 4 != 0)
 			putchar(186);
 		else
-			putchar(199);
+			putchar(186);
 	}
 	
 	// Draw vertical lines
@@ -155,7 +155,8 @@ void BoardView::showBoard()
 		{
 			Controller::gotoXY(i + left + 1, j + top);
 			if (i % 8 == 0)
-				putchar(197);
+				//putchar(197);
+				putchar(32);
 			else
 				putchar(196);
 		}
@@ -227,15 +228,18 @@ void BoardView::selectedBlock(int x, int y) {
 			putchar(32);
 		}
 	}
-	Controller::gotoXY(x, y);
-	putchar(getPokemons(x, y));
-	Controller::gotoXY(x, y);
+	if (getCheck(x, y) != _DELETE) {
+		Controller::gotoXY(x, y);
+		putchar(getPokemons(x, y));
+		Controller::gotoXY(x, y);
+	}
 }
 
 void BoardView::unselectedBlock(int x, int y) {
 	int r = getRAt(x, y);
 	int c = getCAt(x, y);
-	pBoard[r][c].setCheck(_NORMAL);
+	if(getCheck(x, y) != _DELETE)
+		pBoard[r][c].setCheck(_NORMAL);
 
 	Controller::setConsoleColor(BRIGHT_WHITE, BLACK);
 	for (int i = y - 1; i <= y + 1; i++) {
@@ -244,9 +248,11 @@ void BoardView::unselectedBlock(int x, int y) {
 			putchar(32);
 		}
 	}
-	Controller::gotoXY(x, y);
-	putchar(getPokemons(x, y));
-	Controller::gotoXY(x, y);
+	if (getCheck(x, y) != _DELETE) {
+		Controller::gotoXY(x, y);
+		putchar(getPokemons(x, y));
+		Controller::gotoXY(x, y);
+	}
 }
 
 void BoardView::lockBlock(int x, int y)
@@ -281,4 +287,28 @@ void BoardView::deleteBlock(int x, int y)
 		}
 	}
 	Controller::gotoXY(x, y);
+	if (y - 4 >= getYAt(0, 0) && getCheck(x, y - 4) == _DELETE) {
+		for (int i = x - 3; i <= x + 3; i++) {
+			Controller::gotoXY(i, y - 2);
+			putchar(32);
+		}
+	}
+	if (y + 4 <= getYAt(0, size - 1) && getCheck(x, y + 4) == _DELETE) {
+		for (int i = x - 3; i <= x + 3; i++) {
+			Controller::gotoXY(i, y + 2);
+			putchar(32);
+		}
+	}
+	if (x - 8 >= getXAt(0, 0) && getCheck(x - 8, y) == _DELETE) {
+		for (int i = y - 1; i <= y + 1; i++) {
+			Controller::gotoXY(x - 4, i);
+			putchar(32);
+		}
+	}
+	if (x + 8 <= getXAt(0, size - 1) && getCheck(x + 8, y) == _DELETE) {
+		for (int i = y - 1; i <= y + 1; i++) {
+			Controller::gotoXY(x + 4, i);
+			putchar(32);
+		}
+	}
 }

@@ -66,7 +66,7 @@ void Game::moveRight()
 	if (_x < board->getXAt(board->getSize() - 1, board->getSize() - 1))
 	{
 		Controller::playSound(MOVE_SOUND);
-		if (board->getCheck(_x, _y) != _LOCK && board->getCheck(_x, _y) != _DELETE) {
+		if (board->getCheck(_x, _y) != _LOCK) {
 			board->unselectedBlock(_x, _y);
 		}
 
@@ -75,10 +75,8 @@ void Game::moveRight()
 			Controller::gotoXY(_x, _y);
 		}
 		_x += 8;
-		Controller::showCursor(true);
-		Controller::gotoXY(_x, _y);
 
-		if (board->getCheck(_x, _y) != _LOCK && board->getCheck(_x, _y) != _DELETE) {
+		if (board->getCheck(_x, _y) != _LOCK) {
 			board->selectedBlock(_x, _y);
 		}
 	}
@@ -92,7 +90,7 @@ void Game::moveLeft()
 	if (_x > board->getXAt(0, 0))
 	{
 		Controller::playSound(MOVE_SOUND);
-		if (board->getCheck(_x, _y) != _LOCK && board->getCheck(_x, _y) != _DELETE) {
+		if (board->getCheck(_x, _y) != _LOCK) {
 			board->unselectedBlock(_x, _y);
 		}
 
@@ -101,10 +99,8 @@ void Game::moveLeft()
 			Controller::gotoXY(_x, _y);
 		}
 		_x -= 8;
-		Controller::showCursor(true);
-		Controller::gotoXY(_x, _y);
 
-		if (board->getCheck(_x, _y) != _LOCK && board->getCheck(_x, _y) != _DELETE) {
+		if (board->getCheck(_x, _y) != _LOCK) {
 			board->selectedBlock(_x, _y);
 		}
 	}
@@ -117,7 +113,7 @@ void Game::moveDown()
 	if (_y < board->getYAt(board->getSize() - 1, board->getSize() - 1))
 	{
 		Controller::playSound(MOVE_SOUND);
-		if (board->getCheck(_x, _y) != _LOCK && board->getCheck(_x, _y) != _DELETE) {
+		if (board->getCheck(_x, _y) != _LOCK) {
 			board->unselectedBlock(_x, _y);
 		}
 
@@ -126,10 +122,8 @@ void Game::moveDown()
 			Controller::gotoXY(_x, _y);
 		}
 		_y += 4;
-		Controller::showCursor(true);
-		Controller::gotoXY(_x, _y);
 
-		if (board->getCheck(_x, _y) != _LOCK && board->getCheck(_x, _y) != _DELETE) {
+		if (board->getCheck(_x, _y) != _LOCK) {
 			board->selectedBlock(_x, _y);
 		}
 	}
@@ -142,7 +136,7 @@ void Game::moveUp()
 	if (_y > board->getYAt(0, 0))
 	{
 		Controller::playSound(MOVE_SOUND);
-		if (board->getCheck(_x, _y) != _LOCK && board->getCheck(_x, _y) != _DELETE) {
+		if (board->getCheck(_x, _y) != _LOCK) {
 			board->unselectedBlock(_x, _y);
 		}
 
@@ -151,10 +145,8 @@ void Game::moveUp()
 			Controller::gotoXY(_x, _y);
 		}
 		_y -= 4;
-		Controller::showCursor(true);
-		Controller::gotoXY(_x, _y);
 
-		if (board->getCheck(_x, _y) != _LOCK && board->getCheck(_x, _y) != _DELETE) {
+		if (board->getCheck(_x, _y) != _LOCK) {
 			board->selectedBlock(_x, _y);
 		}
 	}
@@ -168,6 +160,8 @@ void Game::printInterface()
 	board->buildBoardData();
 	board->renderBoard();
 	Controller::setConsoleColor(BRIGHT_WHITE, YELLOW);
+	Controller::gotoXY(88, 28);
+	cout << "H : Help";
 	Controller::gotoXY(98, 28);
 	cout << "Esc : Exit";
 }
@@ -398,5 +392,39 @@ void Game::deleteBlock() {
 	for (auto block : _lockedBlockPair)
 		board->deleteBlock(block.first, block.second);
 	_lockedBlockPair.clear();
+	board->selectedBlock(_x, _y);
+	if (!endGame()) {
+		Controller::gotoXY(50, 0);
+		cout << "No more ways!!";
+	}
 }
 
+bool Game::endGame() {
+	if (_remainBlocks == 0)
+		return true;
+	int size = board->getSize();
+	pair<int, int> firstBlock;
+	pair<int, int> secondBlock;
+	for (int i = 0; i < size; i++) {
+		for (int j = 0; j < size; j++) {
+			firstBlock.first = board->getXAt(i, j);
+			firstBlock.second = board->getYAt(i, j);
+			if (board->getCheck(firstBlock.first, firstBlock.second) == _DELETE) {
+				continue;
+			}
+			for (int m =  i ; m < size; m++) {
+				for (int n = 0; n < size; n++) {
+					if (i == m && n <= j) continue;
+					secondBlock.first = board->getXAt(m, n);
+					secondBlock.second = board->getYAt(m, n);
+					if(board->getCheck(secondBlock.first, secondBlock.second) == _DELETE)
+						continue;
+					if (checkMatching(firstBlock, secondBlock)) {
+						return true;
+					}
+				}
+			}
+		}
+	}
+	return false;
+}

@@ -4,7 +4,6 @@
 #include <iostream>
 #include <vector>
 
-#define SIZE 4
 #define LEFT 25
 #define TOP 1
 
@@ -42,4 +41,5 @@ struct Game {
 
 	void lockBlock();
 	void deleteBlock();
+	bool endGame();
 };
