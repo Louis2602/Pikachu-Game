@@ -55,6 +55,7 @@ void Game::startGame()
 			break;
 		}
 	}
+	Sleep(1000);
 	Controller::setConsoleColor(BLACK, WHITE);
 	Controller::clearConsole();
 	isPlaying = false;
@@ -396,6 +397,7 @@ void Game::deleteBlock() {
 	if (!endGame()) {
 		Controller::gotoXY(50, 0);
 		cout << "No more ways!!";
+		startGame();
 	}
 }
 

@@ -293,7 +293,7 @@ void BoardView::deleteBlock(int x, int y)
 			putchar(32);
 		}
 	}
-	if (y + 4 <= getYAt(0, size - 1) && getCheck(x, y + 4) == _DELETE) {
+	if (y + 4 <= getYAt(size - 1, size - 1) && getCheck(x, y + 4) == _DELETE) {
 		for (int i = x - 3; i <= x + 3; i++) {
 			Controller::gotoXY(i, y + 2);
 			putchar(32);
@@ -305,7 +305,7 @@ void BoardView::deleteBlock(int x, int y)
 			putchar(32);
 		}
 	}
-	if (x + 8 <= getXAt(0, size - 1) && getCheck(x + 8, y) == _DELETE) {
+	if (x + 8 <= getXAt(size - 1, size - 1) && getCheck(x + 8, y) == _DELETE) {
 		for (int i = y - 1; i <= y + 1; i++) {
 			Controller::gotoXY(x + 4, i);
 			putchar(32);
