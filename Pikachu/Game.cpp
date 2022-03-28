@@ -198,8 +198,12 @@ bool Game::checkMatchedPokemons(pair<int, int> firstBlock, pair<int, int> second
 	return (board->getPokemons(firstBlock.first, firstBlock.second) == board->getPokemons(secondBlock.first, secondBlock.second));
 }
 
-bool Game::checkIMatching(pair<int, int> firstBlock, pair<int, int> secondBlock)
+int Game::checkIMatching(pair<int, int> firstBlock, pair<int, int> secondBlock)
 {
+	if (firstBlock.first == secondBlock.first && firstBlock.second == secondBlock.second) {
+		return 2;
+	}
+
 	// check line y -> check value of x
 	if (firstBlock.second == secondBlock.second) {
 		if (firstBlock.first > secondBlock.first)
@@ -209,7 +213,13 @@ bool Game::checkIMatching(pair<int, int> firstBlock, pair<int, int> secondBlock)
 				return 0;
 			}
 		}
-		return 1;
+		if (board->getCheck(firstBlock.first, firstBlock.second) == _DELETE
+			|| board->getCheck(secondBlock.first, secondBlock.second) == _DELETE) {
+			return 2;
+		}
+		if (checkMatchedPokemons(firstBlock,secondBlock))  {
+			return 1;
+		}
 	}
 	// check line x -> check value of y
 	if (firstBlock.first == secondBlock.first) {
@@ -220,7 +230,13 @@ bool Game::checkIMatching(pair<int, int> firstBlock, pair<int, int> secondBlock)
 				return 0;
 			}
 		}
-		return 1;
+		if (board->getCheck(firstBlock.first, firstBlock.second) == _DELETE
+			|| board->getCheck(secondBlock.first, secondBlock.second) == _DELETE) {
+			return 2;
+		}
+		if (checkMatchedPokemons(firstBlock, secondBlock)) {
+			return 1;
+		}
 	}
 	return 0;
 }
@@ -294,48 +310,29 @@ bool Game::checkUMatching(pair<int, int> firstBlock, pair<int, int> secondBlock)
 	const int size = board->getSize();
 	const int x = board->getXAt(0, 0);
 	const int y = board->getYAt(0, 0);
-	
-	// Check at barrier
-	if ((firstBlock.first == x && secondBlock.first == x) || (firstBlock.first == x + (size - 1) * 8 && secondBlock.first == x + (size - 1) * 8)
-		|| (firstBlock.second == y && secondBlock.second == y) || (firstBlock.second == y + (size - 1) * 4 && secondBlock.second == y + (size - 1) * 4))
-		return 1;
-	
+
 	if (firstBlock.second > secondBlock.second)
 		swap(firstBlock, secondBlock);
 
-	// check U left-right
-	for (int i = x; i <= x + (size - 1) * 8; i+=8) {
+	for (int i = x; i <= x + (size - 1) * 8; i += 8) {
+		
 		Ucorner1.first = i;
 		Ucorner1.second = firstBlock.second;
 		Ucorner2.first = i;
 		Ucorner2.second = secondBlock.second;
-			
-		if (Ucorner1.first == firstBlock.first) {
-			if (board->getCheck(i, secondBlock.second) == _DELETE) {
-				if (checkIMatching(Ucorner1, firstBlock) && checkIMatching(Ucorner2, secondBlock))
-					return 1;
+
+		if (i == x || i == x + (size - 1) * 8) {
+			if (checkIMatching(firstBlock, Ucorner1)==2 && checkIMatching(Ucorner2, secondBlock)==2) {
+				return 1;
 			}
 		}
-		if (Ucorner2.first == secondBlock.first) {
-			if (board->getCheck(i, firstBlock.second) == _DELETE) {
-				if (checkIMatching(Ucorner1, firstBlock) && checkIMatching(Ucorner2, secondBlock) 
-					&& checkIMatching(Ucorner1, Ucorner2))
-					return 1;
-			}
-		}
-		if (board->getCheck(Ucorner1.first, Ucorner1.second) == _DELETE) {
-			if (board->getCheck(Ucorner2.first, Ucorner2.second) == _DELETE) {
-				if (Ucorner1.first == x || Ucorner1.first == x + (size - 1) * 8) {
-					if (checkIMatching(Ucorner1, firstBlock) && checkIMatching(Ucorner2, secondBlock))
-						return 1;
-				}
-				if (checkIMatching(Ucorner1, firstBlock) && checkIMatching(Ucorner2, secondBlock) 
-					&& checkIMatching(Ucorner1, Ucorner2))
-					return 1;
-			}
+
+		if (checkIMatching(firstBlock, Ucorner1)==2 && checkIMatching(Ucorner2, secondBlock)==2
+			&& checkIMatching(Ucorner2, Ucorner1)==2) {
+			return 1;
 		}
 	}
-	// check U up-down
+
 	if (firstBlock.first > secondBlock.first)
 		swap(firstBlock, secondBlock);
 
@@ -345,31 +342,18 @@ bool Game::checkUMatching(pair<int, int> firstBlock, pair<int, int> secondBlock)
 		Ucorner2.first = secondBlock.first;
 		Ucorner2.second = i;
 
-		if (Ucorner1.second == firstBlock.second) {
-			if (board->getCheck(secondBlock.first, i) == _DELETE) {
-				if (checkIMatching(Ucorner1, firstBlock) && checkIMatching(Ucorner2, secondBlock))
-					return 1;
+		if (i == y || i == y + (size - 1) * 4) {
+			if (checkIMatching(firstBlock, Ucorner1)==2 && checkIMatching(Ucorner2, secondBlock)==2) {
+				return 1;
 			}
 		}
-		if (Ucorner2.second == secondBlock.second) {
-			if (board->getCheck(firstBlock.first, i) == _DELETE) {
-				if (checkIMatching(Ucorner1, firstBlock) && checkIMatching(Ucorner2, secondBlock) 
-					&& checkIMatching(Ucorner1, Ucorner2))
-					return 1;
-			}
-		}
-		if (board->getCheck(Ucorner1.first, Ucorner1.second) == _DELETE) {
-			if (board->getCheck(Ucorner2.first, Ucorner2.second) == _DELETE) {
-				if (Ucorner1.second == y || Ucorner1.second == y + (size - 1) * 4) {
-					if (checkIMatching(Ucorner1, firstBlock) && checkIMatching(Ucorner2, secondBlock))
-						return 1;
-				}
-				if (checkIMatching(Ucorner1, firstBlock) && checkIMatching(Ucorner2, secondBlock)
-					&& checkIMatching(Ucorner1, Ucorner2))
-					return 1;
-			}
+
+		if (checkIMatching(firstBlock, Ucorner1)==2 && checkIMatching(Ucorner2, secondBlock)==2
+			&& checkIMatching(Ucorner2, Ucorner1)==2) {
+			return 1;
 		}
 	}
+
 	return 0;
 }
 
@@ -379,23 +363,23 @@ bool Game::checkMatching(pair<int, int> firstBlock, pair<int, int> secondBlock)
 		return 0;
 	}
 	if (checkIMatching(firstBlock, secondBlock)) {
-		Controller::gotoXY(50, 0);
-		cout << 'I';
+		/*Controller::gotoXY(50, 0);
+		cout << 'I';*/
 		return 1;
 	}
 	if (checkLMatching(firstBlock, secondBlock)) {
-		Controller::gotoXY(50, 0);
-		cout << 'L';
+		/*Controller::gotoXY(50, 0);
+		cout << 'L';*/
 		return 1;
 	}
 	if (checkZMatching(firstBlock, secondBlock)) {
-		Controller::gotoXY(50, 0);
-		cout << 'Z';
+		/*Controller::gotoXY(50, 0);
+		cout << 'Z';*/
 		return 1;
 	}
 	if (checkUMatching(firstBlock, secondBlock)) {
-		Controller::gotoXY(50, 0);
-		cout << 'U';
+		/*Controller::gotoXY(50, 0);
+		cout << 'U';*/
 		return 1;
 	}
 	return 0;
