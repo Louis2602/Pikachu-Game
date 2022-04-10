@@ -191,7 +191,7 @@ void BoardView::buildBoardData() {
 	// Random pokemons
 	for (int i = 0; i < size; i++) {
 		for (int j = 0; j < size; j+=2) {
-			pokemons[i][j] = pokemons[i][j + 1] = rand() % 26 + 'A';
+			pokemons[i][j] = pokemons[i][j + 1] = /*rand() % 26 + */'A';
 		}
 	}
 
@@ -341,14 +341,14 @@ void BoardView::drawLineI(pair<int, int>firstBlock, pair<int, int>secondBlock) {
 void BoardView::deleteLineI(pair<int, int>firstBlock, pair<int, int>secondBlock) {
 	Controller::setConsoleColor(BRIGHT_WHITE, BRIGHT_WHITE);
 	if (firstBlock.first == secondBlock.first) {
-		for (int i = firstBlock.second; i <= secondBlock.second; i++) {
+		for (int i = firstBlock.second + 1; i <= secondBlock.second - 1; i++) {
 			Controller::gotoXY(firstBlock.first, i);
 			putchar(32);
 		}
 	}
 	//========================================================================//
 	if (firstBlock.second == secondBlock.second) {
-		for (int i = firstBlock.first; i <= secondBlock.first; i++) {
+		for (int i = firstBlock.first + 1; i <= secondBlock.first - 1; i++) {
 			Controller::gotoXY(i, firstBlock.second);
 			putchar(32);
 		}
@@ -425,42 +425,184 @@ void BoardView::drawLineL(pair<int, int>firstBlock, pair<int, int>secondBlock, p
 void BoardView::deleteLineL(pair<int, int>firstBlock, pair<int, int>secondBlock, pair<int, int>Lcorner) {
 	Controller::setConsoleColor(BRIGHT_WHITE, BRIGHT_WHITE);
 	// down-left corner
-	for (int i = firstBlock.second; i <= Lcorner.second; i++) {
+	for (int i = firstBlock.second + 1; i <= Lcorner.second - 1; i++) {
 		Controller::gotoXY(firstBlock.first, i);
 		putchar(32);
 	}
-	for (int i = Lcorner.first; i <= secondBlock.first; i++) {
+	for (int i = Lcorner.first; i <= secondBlock.first - 1; i++) {
 		Controller::gotoXY(i, secondBlock.second);
 		putchar(32);
 	}
 	//========================================================================//
 	// up-left corner
-	for (int i = firstBlock.second; i >= Lcorner.second; i--) {
+	for (int i = firstBlock.second - 1; i >= Lcorner.second + 1; i--) {
 		Controller::gotoXY(firstBlock.first, i);
 		putchar(32);
 	}
-	for (int i = Lcorner.first; i <= secondBlock.first; i++) {
+	for (int i = Lcorner.first; i <= secondBlock.first - 1; i++) {
 		Controller::gotoXY(i, secondBlock.second);
 		putchar(32);
 	}
 	//========================================================================//
 	// up-right corner
-	for (int i = firstBlock.first; i <= Lcorner.first; i++) {
+	for (int i = firstBlock.first + 1; i <= Lcorner.first; i++) {
 		Controller::gotoXY(i, firstBlock.second);
 		putchar(32);
 	}
-	for (int i = Lcorner.second; i <= secondBlock.second; i++) {
+	for (int i = Lcorner.second + 1; i <= secondBlock.second - 1; i++) {
 		Controller::gotoXY(secondBlock.first, i);
 		putchar(32);
 	}
 	//========================================================================//
 	// down-right corner
-	for (int i = firstBlock.first; i <= Lcorner.first; i++) {
+	for (int i = firstBlock.first + 1; i <= Lcorner.first; i++) {
 		Controller::gotoXY(i, firstBlock.second);
 		putchar(32);
 	}
-	for (int i = Lcorner.second; i >= secondBlock.second; i--) {
+	for (int i = Lcorner.second - 1; i >= secondBlock.second + 1; i--) {
 		Controller::gotoXY(secondBlock.first, i);
+		putchar(32);
+	}
+}
+
+void BoardView::drawLineZ(pair<int, int>firstBlock, pair<int, int>secondBlock, pair<int, int>Zcorner1, pair<int, int>Zcorner2) {
+	Controller::setConsoleColor(RED, BRIGHT_WHITE);
+	// down-left corner
+	if (Zcorner1.first < secondBlock.first && Zcorner1.second > firstBlock.second) {
+		Controller::gotoXY(firstBlock.first, firstBlock.second + 1);
+		putchar(30);
+		for (int i = firstBlock.second + 2; i <= Zcorner1.second - 1; i++) {
+			Controller::gotoXY(firstBlock.first, i);
+			putchar(179);
+		}
+		for (int i = Zcorner1.first; i <= Zcorner2.first; i++) {
+			Controller::gotoXY(i, Zcorner1.second);
+			putchar(45);
+		}
+		for (int i = Zcorner2.second + 1; i <= secondBlock.second - 2; i++) {
+			Controller::gotoXY(secondBlock.first, i);
+			putchar(179);
+		}
+		Controller::gotoXY(secondBlock.first, secondBlock.second - 1);
+		putchar(31);
+	}
+	//========================================================================//
+	// up-left corner
+	if (Zcorner1.first > secondBlock.first && Zcorner1.second > firstBlock.second) {
+		Controller::gotoXY(firstBlock.first, firstBlock.second + 1);
+		putchar(30);
+		for (int i = firstBlock.second + 2; i <= Zcorner1.second - 1; i++) {
+			Controller::gotoXY(firstBlock.first, i);
+			putchar(179);
+		}	
+		for (int i = Zcorner1.first; i >= Zcorner2.first; i--) {
+			Controller::gotoXY(i, Zcorner1.second);
+			putchar(45);
+		}
+		for (int i = Zcorner2.second + 1; i <= secondBlock.second - 2; i++) {
+			Controller::gotoXY(secondBlock.first, i);
+			putchar(179);
+		}
+		Controller::gotoXY(secondBlock.first, secondBlock.second - 1);
+		putchar(31);
+	}
+	//========================================================================//
+	// up-right corner
+	if (Zcorner1.second < secondBlock.second && Zcorner1.first > firstBlock.first) {
+		Controller::gotoXY(firstBlock.first + 1, firstBlock.second);
+		putchar(17);
+		for (int i = firstBlock.first + 2; i <= Zcorner1.first; i++) {
+			Controller::gotoXY(i, firstBlock.second);
+			putchar(45);
+		}
+		for (int i = Zcorner1.second + 1; i <= Zcorner2.second - 1; i++) {
+			Controller::gotoXY(Zcorner1.first, i);
+			putchar(179);
+		}
+		for (int i = Zcorner2.first; i <= secondBlock.first - 2; i++) {
+			Controller::gotoXY(i, secondBlock.second);
+			putchar(45);
+		}
+		Controller::gotoXY(secondBlock.first - 1, secondBlock.second);
+		putchar(16);
+	}
+	//========================================================================//
+	// down-right corner
+	if (Zcorner1.second > secondBlock.second && Zcorner1.first > firstBlock.first) {
+		Controller::gotoXY(firstBlock.first + 1, firstBlock.second);
+		putchar(17);
+		for (int i = firstBlock.first + 2; i <= Zcorner1.first; i++) {
+			Controller::gotoXY(i, firstBlock.second);
+			putchar(45);
+		}
+		for (int i = Zcorner1.second - 1; i >= Zcorner2.second + 1; i--) {
+			Controller::gotoXY(Zcorner1.first, i);
+			putchar(179);
+		}
+		for (int i = Zcorner2.first; i <= secondBlock.first - 2; i++) {
+			Controller::gotoXY(i, secondBlock.second);
+			putchar(45);
+		}
+		Controller::gotoXY(secondBlock.first - 1, secondBlock.second);
+		putchar(16);
+	}
+}
+
+void BoardView::deleteLineZ(pair<int, int>firstBlock, pair<int, int>secondBlock, pair<int, int>Zcorner1, pair<int, int>Zcorner2) {
+	Controller::setConsoleColor(BRIGHT_WHITE, BRIGHT_WHITE);
+	// down-left corner
+	for (int i = firstBlock.second + 1; i <= Zcorner1.second - 1; i++) {
+		Controller::gotoXY(firstBlock.first, i);
+		putchar(32);
+	}
+	for (int i = Zcorner1.first; i <= Zcorner2.first; i++) {
+		Controller::gotoXY(i, Zcorner1.second);
+		putchar(32);
+	}
+	for (int i = Zcorner2.second + 1; i <= secondBlock.second - 1; i++) {
+		Controller::gotoXY(secondBlock.first, i);
+		putchar(32);
+	}
+	//========================================================================//
+	// up-left corner
+	for (int i = firstBlock.second + 1; i <= Zcorner1.second - 1; i++) {
+		Controller::gotoXY(firstBlock.first, i);
+		putchar(32);
+	}
+	for (int i = Zcorner1.first; i >= Zcorner2.first; i--) {
+		Controller::gotoXY(i, Zcorner1.second);
+		putchar(32);
+	}
+	for (int i = Zcorner2.second + 1; i <= secondBlock.second - 1; i++) {
+		Controller::gotoXY(secondBlock.first, i);
+		putchar(32);
+	}
+	//========================================================================//
+	// up-right corner
+	for (int i = firstBlock.first + 1; i <= Zcorner1.first; i++) {
+		Controller::gotoXY(i, firstBlock.second);
+		putchar(32);
+	}
+	for (int i = Zcorner1.second + 1; i <= Zcorner2.second - 1; i++) {
+		Controller::gotoXY(Zcorner1.first, i);
+		putchar(32);
+	}
+	for (int i = Zcorner2.first; i <= secondBlock.first - 1; i++) {
+		Controller::gotoXY(i, secondBlock.second);
+		putchar(32);
+	}
+	//========================================================================//
+	// down-right corner
+	for (int i = firstBlock.first + 1; i <= Zcorner1.first; i++) {
+		Controller::gotoXY(i, firstBlock.second);
+		putchar(32);
+	}
+	for (int i = Zcorner1.second - 1; i >= Zcorner2.second + 1; i--) {
+		Controller::gotoXY(Zcorner1.first, i);
+		putchar(32);
+	}
+	for (int i = Zcorner2.first; i <= secondBlock.first - 1; i++) {
+		Controller::gotoXY(i, secondBlock.second);
 		putchar(32);
 	}
 }

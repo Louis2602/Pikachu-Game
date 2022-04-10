@@ -43,8 +43,8 @@ struct BoardView {
 	void deleteLineI(pair<int, int>, pair<int, int>);
 	void drawLineL(pair<int, int>, pair<int, int>, pair<int, int>);
 	void deleteLineL(pair<int, int>, pair<int, int>, pair<int, int>);
-	void drawLineZ(pair<int, int>, pair<int, int>);
-	void deleteLineZ(pair<int, int>, pair<int, int>);
+	void drawLineZ(pair<int, int>, pair<int, int>, pair<int, int>, pair<int, int>);
+	void deleteLineZ(pair<int, int>, pair<int, int>, pair<int, int>, pair<int, int>);
 	void drawLineU(pair<int, int>, pair<int, int>);
 	void deleteLineU(pair<int, int>, pair<int, int>);
 };

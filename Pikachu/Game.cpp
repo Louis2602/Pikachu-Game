@@ -62,7 +62,7 @@ void Game::startGame()
 		if (isPause)
 			continue;
 	}
-	
+	if(_remainBlocks == 0)
 	isPlaying = false;
 	_remainBlocks = _mode * _mode;
 }
@@ -312,12 +312,19 @@ bool Game::checkZMatching(pair<int, int> firstBlock, pair<int, int> secondBlock,
 	for (int i = firstBlock.first + 8; i < secondBlock.first; i += 8) {
 		if (board->getCheck(i, firstBlock.second) == _DELETE) {
 			if (board->getCheck(i, secondBlock.second) == _DELETE) {
-				Zcorner1.first = i;
+				Zcorner1.first = i;	
 				Zcorner1.second = firstBlock.second;
 				Zcorner2.first = i;
 				Zcorner2.second = secondBlock.second;
-				if (checkIMatching(Zcorner1, Zcorner2, isChecking) && checkIMatching(Zcorner2, secondBlock, isChecking))
+				if (checkIMatching(Zcorner1, Zcorner2, isChecking) &&
+					checkIMatching(Zcorner2, secondBlock, isChecking)) {
+					if (isChecking == false) {
+						board->drawLineZ(firstBlock, secondBlock, Zcorner1, Zcorner2);
+						Sleep(1000);
+						board->deleteLineZ(firstBlock, secondBlock, Zcorner1, Zcorner2);
+					}
 					return 1;
+				}
 			}
 		}
 		else break;
@@ -327,14 +334,20 @@ bool Game::checkZMatching(pair<int, int> firstBlock, pair<int, int> secondBlock,
 		swap(firstBlock, secondBlock);
 	for (int i = firstBlock.second + 4; i < secondBlock.second; i += 4) {
 		if (board->getCheck(firstBlock.first, i) == _DELETE) {
-			if (board->getCheck(secondBlock.first, i) == _DELETE)
-			{
-				Zcorner1.first = firstBlock.first;
+			if (board->getCheck(secondBlock.first, i) == _DELETE) {
+				Zcorner1.first = firstBlock.first;	
 				Zcorner1.second = i;
 				Zcorner2.first = secondBlock.first;
 				Zcorner2.second = i;
-				if (checkIMatching(Zcorner1, Zcorner2, isChecking) && checkIMatching(Zcorner2, secondBlock, isChecking))
+				if (checkIMatching(Zcorner1, Zcorner2, isChecking) &&
+					checkIMatching(Zcorner2, secondBlock, isChecking)) {
+					if (isChecking == false) {
+						board->drawLineZ(firstBlock, secondBlock, Zcorner1, Zcorner2);
+						Sleep(1000);
+						board->deleteLineZ(firstBlock, secondBlock, Zcorner1, Zcorner2);
+					}
 					return 1;
+				}
 			}
 		}
 		else break;
@@ -425,20 +438,29 @@ void Game::deleteBlock() {
 		return;
 	}
 	_remainBlocks -= 2;
-	for (auto block : _lockedBlockPair)
-		board->deleteBlock(block.first, block.second);
-	_lockedBlockPair.clear();
-	board->selectedBlock(_x, _y);
 	isChecking = true;
 	if (!isAvailableBlock(isChecking)) {
 		Controller::gotoXY(50, 0);
 		cout << "No more ways!!";
 	}
+	for (auto block : _lockedBlockPair)
+		board->deleteBlock(block.first, block.second);
+	_lockedBlockPair.clear();
+	board->selectedBlock(_x, _y);
+	
+	if (_remainBlocks == 0) {
+		Controller::gotoXY(40, 0);
+		cout << "No more blocks left!! You win the game.";
+		board->unselectedBlock(_x, _y);
+		_x = board->getXAt(0, 0);
+		_y = board->getYAt(0, 0);
+		Controller::gotoXY(_x, _y);
+		board->selectedBlock(_x, _y);
+	}
+		
 }
 
 bool Game::isAvailableBlock(bool isChecking) {
-	if (_remainBlocks == 0)
-		return true;
 	int size = board->getSize();
 	pair<int, int> firstBlock;
 	pair<int, int> secondBlock;
