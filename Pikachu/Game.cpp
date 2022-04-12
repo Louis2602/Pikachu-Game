@@ -62,7 +62,6 @@ void Game::startGame()
 		if (isPause)
 			continue;
 	}
-	if(_remainBlocks == 0)
 	isPlaying = false;
 	_remainBlocks = _mode * _mode;
 }
@@ -388,7 +387,7 @@ bool Game::checkUMatching(pair<int, int> firstBlock, pair<int, int> secondBlock,
 				&& checkIMatching(Ucorner1, Ucorner2, isChecking) == 2) {
 				if (isChecking == false) {
 					board->drawLineU(firstBlock, secondBlock, Ucorner1, Ucorner2);
-					Sleep(1000);
+					Sleep(200);
 					board->deleteLineU(firstBlock, secondBlock, Ucorner1, Ucorner2);
 				}
 				return 1;
@@ -428,7 +427,7 @@ bool Game::checkUMatching(pair<int, int> firstBlock, pair<int, int> secondBlock,
 				&& checkIMatching(Ucorner1, Ucorner2, isChecking) == 2) {
 				if (isChecking == false) {
 					board->drawLineU(firstBlock, secondBlock, Ucorner1, Ucorner2);
-					Sleep(1000);
+					Sleep(1200);
 					board->deleteLineU(firstBlock, secondBlock, Ucorner1, Ucorner2);
 				}
 				return 1;
@@ -472,7 +471,7 @@ bool Game::checkUMatching(pair<int, int> firstBlock, pair<int, int> secondBlock,
 				&& checkIMatching(Ucorner1, Ucorner2, isChecking) == 2) {
 				if (isChecking == false) {
 					board->drawLineU(firstBlock, secondBlock, Ucorner1, Ucorner2);
-					Sleep(1000);
+					Sleep(200);
 					board->deleteLineU(firstBlock, secondBlock, Ucorner1, Ucorner2);
 				}
 				return 1;
@@ -512,7 +511,7 @@ bool Game::checkUMatching(pair<int, int> firstBlock, pair<int, int> secondBlock,
 				&& checkIMatching(Ucorner1, Ucorner2, isChecking) == 2) {
 				if (isChecking == false) {
 					board->drawLineU(firstBlock, secondBlock, Ucorner1, Ucorner2);
-					Sleep(1000);
+					Sleep(200);
 					board->deleteLineU(firstBlock, secondBlock, Ucorner1, Ucorner2);
 				}
 				return 1;

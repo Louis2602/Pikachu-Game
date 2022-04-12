@@ -86,6 +86,7 @@ void Menu::helpScreen()
 void Menu::exitScreen()
 {
 	Controller::showCursor(false);
+	Controller::setConsoleColor(BRIGHT_WHITE, BLACK);
 	Controller::clearConsole();
 	Controller::setConsoleColor(BRIGHT_WHITE, BLACK);
 	printRectangle(36, 18, 35, 8);
