@@ -4,6 +4,8 @@
 #include <Windows.h>
 #include <conio.h>
 #include <vector>
+#include <Random>
+#include <string>
 
 // COLOR CODE
 #define BLACK 0
@@ -36,7 +38,7 @@
 #define ERROR_SOUND 2
 #define WIN_SOUND 4
 #define LOSE_SOUND 5
-
+#define BACKGROUND_SOUND 6
 using namespace std;
 
 struct Controller {
@@ -59,3 +61,4 @@ struct Controller {
 	static void playSound(int);               //Phát âm thanh
 }; 
 
+int getRandomInt(int begin, int end);         //Hàm lấy số nguyên ngẫu nhiên

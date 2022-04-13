@@ -23,8 +23,8 @@ void Controller::setAndCenterWindow()
 {
 	RECT rectClient, rectWindow;
 	GetClientRect(consoleWindow, &rectClient), GetWindowRect(consoleWindow, &rectWindow);
-	int width = 1280;
-	int height = 900;
+	int width = 1100;
+	int height = 768;
 	int posX = (GetSystemMetrics(SM_CXSCREEN) - width) / 2,
 		posY = (GetSystemMetrics(SM_CYSCREEN) - height) / 2;
 	MoveWindow(consoleWindow, posX, posY, width, height, TRUE);
@@ -127,4 +127,12 @@ void Controller::playSound(int i)
 {
 	static vector<const wchar_t*> soundFile{L"move.wav", L"enter.wav", L"error.wav", L"placed.wav", L"win.wav", L"lose.wav",  L"background.wav", L"effect.wav" };
 	PlaySound(soundFile[i], NULL, SND_FILENAME | SND_ASYNC);
+}
+
+int getRandomInt(int begin, int end)
+{
+	static random_device rd;
+	static mt19937 mt(rd());
+	uniform_int_distribution<int> dist(0, end);
+	return dist(mt);
 }

@@ -164,13 +164,13 @@ void Game::printInterface()
 	board->showBoard();
 	board->buildBoardData();
 	board->renderBoard();
-	Menu::printRectangle(69, 27, 14, 2);
-	Menu::printRectangle(88, 27, 14, 2);
+	Menu::printRectangle(59, 27, 14, 2);
+	Menu::printRectangle(78, 27, 14, 2);
 	Controller::setConsoleColor(BRIGHT_WHITE, GREEN);
-	Controller::gotoXY(73, 28);
+	Controller::gotoXY(63, 28);
 	cout << "H : Help";
 	Controller::setConsoleColor(BRIGHT_WHITE, YELLOW);
-	Controller::gotoXY(91, 28);
+	Controller::gotoXY(81, 28);
 	cout << "Esc : Exit";
 }
 

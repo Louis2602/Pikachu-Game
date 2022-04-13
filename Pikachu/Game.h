@@ -5,7 +5,7 @@
 #include <vector>
 #include "Menu.h"
 
-#define LEFT 25
+#define LEFT 5
 #define TOP 1
 
 using namespace std;
