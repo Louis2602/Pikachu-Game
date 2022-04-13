@@ -5,7 +5,7 @@ Game::Game(int mode)
 	_mode = mode;
 	_x = LEFT, _y = TOP;
 	board = new BoardView(_mode, LEFT, TOP);
-	isPlaying = false;
+	isPlaying = true;
 	_lockedBlock = 0;
 	_lockedBlockPair.clear();
 	_remainBlocks = _mode * _mode;
@@ -19,17 +19,16 @@ Game::~Game() {
 void Game::startGame() 
 {
 	Controller::clearConsole();
-	isPlaying = false;
-	bool isPause = false;
-	printInterface();
-	_x = board->getXAt(0, 0);
-	_y = board->getYAt(0, 0);
-	Controller::gotoXY(_x, _y);
-	board->selectedBlock(_x, _y);
-	putchar(board->getPokemons(_x, _y));
-	Controller::gotoXY(_x, _y);
-	while (!isPlaying && _remainBlocks) {
-		while (!isPause) {
+	while (isPlaying) {
+		bool isPause = false;
+		printInterface();
+		_x = board->getXAt(0, 0);
+		_y = board->getYAt(0, 0);
+		Controller::gotoXY(_x, _y);
+		board->selectedBlock(_x, _y);
+		putchar(board->getPokemons(_x, _y));
+		Controller::gotoXY(_x, _y);
+		while (_remainBlocks && !isPause) {
 			switch (Controller::getConsoleInput())
 			{
 			case 0:
@@ -61,9 +60,33 @@ void Game::startGame()
 		}
 		if (isPause)
 			continue;
+		askContinue();
+		_remainBlocks = _mode * _mode;
 	}
-	isPlaying = false;
-	_remainBlocks = _mode * _mode;
+	
+}
+
+void Game::setupGame() {
+	Controller::setConsoleColor(BRIGHT_WHITE, GRAY);
+	Controller::clearConsole();
+	Controller::gotoXY(0, 0);
+	Menu::printLogo();
+	Controller::showCursor(true);
+	Controller::setConsoleColor(BRIGHT_WHITE, RED);
+	Controller::gotoXY(25, 15);
+	cout << "Please enter your name shortly, under 10 characters!";
+
+	Controller::setConsoleColor(BRIGHT_WHITE, LIGHT_BLUE);
+	Controller::gotoXY(35, 18);
+	cout << "Enter your name:  ";
+	cin.getline(playerName, 11);                                       
+	Controller::gotoXY(35, 20);
+	cout << "Enter your ID:  ";
+	cin.getline(playerID, 9);
+	Controller::gotoXY(35, 22);
+	cout << "Enter your class's name:  ";
+	cin.getline(className, 8);
+	Controller::showCursor(false);
 }
 
 void Game::moveRight()
@@ -164,6 +187,34 @@ void Game::printInterface()
 	board->showBoard();
 	board->buildBoardData();
 	board->renderBoard();
+
+	Controller::setConsoleColor(BRIGHT_WHITE, BLACK);
+	Menu::printRectangle(59, 1, 33, 10);
+	Menu::printRectangle(59, 14, 33, 10);
+
+	Menu::printRectangle(60, 2, 31, 2);
+	Controller::setConsoleColor(BRIGHT_WHITE, RED);
+	Controller::gotoXY(67, 3);
+	cout << "PLAYER'S INFORMATION";
+
+	Controller::setConsoleColor(BRIGHT_WHITE, BLUE);
+	Controller::gotoXY(65, 5);
+	cout << "Player's name: " << playerName;
+	Controller::gotoXY(65, 7);
+	cout << "Student's ID: " << playerID;
+	Controller::gotoXY(65, 9);
+	cout << "Class: " << className;
+
+	Controller::setConsoleColor(BRIGHT_WHITE, BLACK);
+	Menu::printRectangle(60, 15, 31, 2);
+	Controller::setConsoleColor(BRIGHT_WHITE, RED);
+	Controller::gotoXY(69, 16);
+	cout << "GAME INFORMATION";
+	Controller::setConsoleColor(BRIGHT_WHITE, BLUE);
+	Controller::gotoXY(65, 18);
+	cout << "Moves:";
+
+	Controller::setConsoleColor(BRIGHT_WHITE, BLACK);
 	Menu::printRectangle(59, 27, 14, 2);
 	Menu::printRectangle(78, 27, 14, 2);
 	Controller::setConsoleColor(BRIGHT_WHITE, GREEN);
@@ -524,18 +575,43 @@ bool Game::checkUMatching(pair<int, int> firstBlock, pair<int, int> secondBlock,
 bool Game::checkMatching(pair<int, int> firstBlock, pair<int, int> secondBlock, bool isChecking)
 {
 	if (!checkMatchedPokemons(firstBlock, secondBlock)) {
+		if (isChecking == false) {
+			Controller::setConsoleColor(BRIGHT_WHITE, BLUE);
+			Controller::gotoXY(72, 18);
+			cout << "Not Matched";
+		}
 		return 0;
 	}
 	if (checkIMatching(firstBlock, secondBlock, isChecking)) {
+		if (isChecking == false) {
+			Controller::setConsoleColor(BRIGHT_WHITE, BLUE);
+			Controller::gotoXY(72, 18);
+			cout << "I Matching.";
+		}
 		return 1;
 	}
 	if (checkLMatching(firstBlock, secondBlock, isChecking)) {
+		if (isChecking == false) {
+			Controller::setConsoleColor(BRIGHT_WHITE, BLUE);
+			Controller::gotoXY(72, 18);
+			cout << "L Matching.";
+		}
 		return 1;
 	}
 	if (checkZMatching(firstBlock, secondBlock, isChecking)) {
+		if (isChecking == false) {
+			Controller::setConsoleColor(BRIGHT_WHITE, BLUE);
+			Controller::gotoXY(72, 18);
+			cout << "Z Matching.";
+		}
 		return 1;
 	}
 	if (checkUMatching(firstBlock, secondBlock, isChecking)) {
+		if (isChecking == false) {
+			Controller::setConsoleColor(BRIGHT_WHITE, BLUE);
+			Controller::gotoXY(72, 18);
+			cout << "U Matching.";
+		}
 		return 1;
 	}
 	return 0;
@@ -556,21 +632,38 @@ void Game::deleteBlock() {
 		board->deleteBlock(block.first, block.second);
 	_lockedBlockPair.clear();
 	board->selectedBlock(_x, _y);
-	isChecking = true;
-	if (!isAvailableBlock(isChecking)) {
-		Controller::gotoXY(50, 0);
-		cout << "No more ways!!";
-	}
 	if (_remainBlocks == 0) {
-		Controller::gotoXY(40, 0);
-		cout << "No more blocks left!! You win the game.";
+		Controller::setConsoleColor(BRIGHT_WHITE, RED);
+		Controller::gotoXY(69, 20);
+		cout << "Game Announcement";
+		Controller::setConsoleColor(BRIGHT_WHITE, BLUE);
+		Controller::gotoXY(67, 21);
+		cout << "You have won the game.";
+		Controller::setConsoleColor(BRIGHT_WHITE, BLUE);
+		Controller::gotoXY(69, 22);
+		cout << "CONGRATULATIONS!";
+		Controller::playSound(WIN_SOUND);
 		board->unselectedBlock(_x, _y);
 		_x = board->getXAt(0, 0);
 		_y = board->getYAt(0, 0);
 		Controller::gotoXY(_x, _y);
 		board->selectedBlock(_x, _y);
+		Sleep(7000);
+		return;
 	}
-		
+	isChecking = true;
+	if (!isAvailableBlock(isChecking)) {
+		Controller::setConsoleColor(BRIGHT_WHITE, RED);
+		Controller::gotoXY(69, 20);
+		cout << "Game Announcement";
+		Controller::gotoXY(65, 21);
+		cout << "There are no more ways left!";
+		Sleep(800);
+		Controller::gotoXY(62, 23);
+		cout << "Auto reset the board. Have fun!";
+		Sleep(1000);
+		startGame();
+	}		
 }
 
 bool Game::isAvailableBlock(bool isChecking) {
@@ -599,4 +692,54 @@ bool Game::isAvailableBlock(bool isChecking) {
 		}
 	}
 	return false;
+}
+
+void Game::askContinue()
+{
+	Controller::setConsoleColor(BRIGHT_WHITE, BLACK);
+	Controller::clearConsole();
+	Controller::gotoXY(0, 0);
+	Controller::setConsoleColor(BRIGHT_WHITE, RED);
+	Menu::printLogo();
+	Controller::setConsoleColor(BRIGHT_WHITE, BLACK);
+	Menu::printRectangle(34, 13, 35, 8);
+	Menu::printRectangle(37, 18, 7, 2);
+	Menu::printRectangle(60, 18, 6, 2);
+	Controller::gotoXY(36, 16);
+	Controller::setConsoleColor(BRIGHT_WHITE, GREEN);
+	cout << "Do you want to play another round?";
+	string str[2] = { "Yes", "No" };
+	int left[] = { 35,40,47,58,63,69 }, word[] = { 32,32,175,174 }, color[] = { BLACK, GREEN }, top = 19;
+	bool choice = 1;
+	auto print1 = [&]()
+	{
+		int i = 0;
+		while (i < 2)
+		{
+			Controller::playSound(MOVE_SOUND);
+			Controller::setConsoleColor(BRIGHT_WHITE, color[i]);
+			Controller::gotoXY(left[choice * 3], top);        putchar(word[i * 2]);
+			Controller::gotoXY(left[choice * 3 + 1], top);    cout << str[choice];
+			Controller::gotoXY(left[choice * 3 + 2], top);    putchar(word[i * 2 + 1]);
+			if (!i++)
+				choice = !choice;
+		}
+	};
+	print1();
+	while (true)
+	{
+		int key = Controller::getConsoleInput();
+		if ((key == 3 && choice == 1) || (key == 4 && choice == 0))
+			print1();
+		else if (key == 6)
+		{
+			if (!choice)
+				isPlaying = true;
+			else
+				isPlaying = false;
+			return;
+		}
+		else
+			Controller::playSound(ERROR_SOUND);
+	}
 }

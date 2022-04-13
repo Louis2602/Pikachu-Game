@@ -1,8 +1,7 @@
 ﻿#include "Menu.h"
 #include "Menu.h"
 int Menu::current_option;
-const string Menu::options[8] = { "Play", "LeaderBoard", "Help", "Exit", " Easy ", " Medium ", "Back", "Exit"};
-using namespace std;
+const string Menu::options[8] = { "Play", "LeaderBoard", "Help", "Exit", "Easy", "  Medium   ", "Back", "Exit"};
 
 void Menu::mainScreen()
 {
@@ -111,87 +110,39 @@ void Menu::printOptionsBoard()
 
 void Menu::printAnimation()
 {
-	/*Controller::setConsoleColor(BRIGHT_WHITE, BLACK);
+	Controller::setConsoleColor(BRIGHT_WHITE, BLACK);
 	Controller::clearConsole();
-	
+	char symbolpos[] = { 5,0,19,0,33,0,47,0,61,0,75,0,89,0,0,103,5,13,19,
+							   13,33,13,47,13,61,13,75,13,89,13,13,103,13,18,26,18,40,18,
+							   54,18,68,18,82,18,96,18,5,24,19,24,33,24,47,24,61,24,75,24,
+							   89,24,24,103,12,30,26,30,40,30,54,30,68,30,82,30,96,30 };
+	int n = (sizeof(symbolpos) / sizeof(symbolpos[0])) / 2;
 	bool turn = 0;
+	unsigned char symbol[] = { 4,15 };
 
-	unsigned char P[] = { 219,219,219,219,219,219,187,32,
-						219,219,32,32,32,219,219,187,
-						219,219,219,219,219,219,201,188,
-						219,219,201,205,205,205,188,32,
-						219,219,186,32,32,32,32,32,
-						200,205,188,32,32,32,32,32
-						};
-	unsigned char I[] = { 32,32,32,219,219,187,32,32,
-						32,32,32,219,219,186,32,32,
-						32,32,32,219,219,186,32,32,
-						32,32,32,219,219,186,32,32,
-						32,32,32,219,219,186,32,32,
-						32,32,32,200,205,188,32,32
-						};
-	unsigned char K[] = {
-						32,219,219,32,219,219,187,32,
-						32,219,219,219,219,205,188,32,
-						32,219,219,219,187,32,32,32,
-						32,219,219,219,219,187,32,32,
-						32,219,219,32,219,219,187,32,
-						32,200,205,205,205,205,188,32
-						};
-	unsigned char A[] = { 
-						32,219,219,219,219,219,187,32,
-						219,219,201,205,205,219,219,187,
-						219,219,219,219,219,219,219,186,
-						219,219,201,205,205,219,219,186,
-						219,219,186,32,32,219,219,186,
-						200,205,188,32,32,200,205,
-						};
-	unsigned char C[] = {
-						32,219,219,219,219,219,219,187,
-						219,219,201,205,205,205,205,188,
-						219,219,186,32,32,32,32,32,
-						219,219,186,32,32,32,32,32,
-						200,219,219,219,219,219,219,187,
-						32,200,205,205,205,205,205,188
-						};
-	unsigned char H[] = {
-						219,219,32,32,32,219,219,187,
-						219,219,32,32,32,219,219,186,
-						219,219,219,219,219,219,219,186,
-						219,219,186,32,32,219,219,186,
-						219,219,186,32,32,219,219,186,
-						200,205,188,32,32,200,205,188
-						};
-	unsigned char U[] = {
-						219,219,32,32,32,219,219,187,
-						219,219,32,32,32,219,219,186,
-						219,219,32,32,32,219,219,186,
-						219,219,32,32,32,219,219,186,
-						219,219,219,219,219,219,219,186,
-						200,205,205,205,205,205,205,188
-						};
-	unsigned char* word[] = { P,I,K,A,C,H,U };
 	int color[] = { LIGHT_AQUA, AQUA, LIGHT_BLUE, BLUE, LIGHT_PURPLE, PURPLE };
-	int wide[] = { 8,9,8,8,8,9 }; int left[] = { 27, 35, 49, 57, 65, 73 };
 	int colorcount = 0;
-	int loop = 11;
+	int loop = 10;
 	while (loop--)
 	{
-		for (int i = 0; i < 6; i++)
+		for (int i = 0; i < n; i += 2)
 		{
-			Controller::setConsoleColor(BRIGHT_WHITE, color[colorcount % 6]);
-			for (int j = 0; j < 6; j++)
-			{
-				Controller::gotoXY(left[i], 4 + j);
-				for (int k = 0; k < wide[i]; k++)
-					putchar(word[i][j * wide[i] + k]);
-			}
-			Sleep(50);
+			Controller::setConsoleColor(BRIGHT_WHITE, getRandomInt(0, 15));
+			Controller::gotoXY(symbolpos[i * 2], symbolpos[i * 2 + 1]);
+			putchar(symbol[turn]);
 		}
+		for (int i = 1; i < n; i += 2)
+		{
+			Controller::setConsoleColor(BRIGHT_WHITE, getRandomInt(0, 15));
+			Controller::gotoXY(symbolpos[i * 2], symbolpos[i * 2 + 1]);
+			putchar(symbol[!turn]);
+		}
+		Controller::gotoXY(0, 0);
+		printLogo();
 		colorcount++;
 		turn = !turn;
 		Sleep(250);
-	}*/
+	}
 }
 
 void Menu::changeOption(bool direction, bool flag) //0: lên, 1: xuống
@@ -241,7 +192,7 @@ void Menu::mainMenu()
 
 void Menu::playMenu()
 {
-	current_option = 6;
+	current_option = 7;
 	changeOption(0, 0);
 	changeOption(0, 0);
 	changeOption(0, 1);
@@ -252,7 +203,7 @@ void Menu::helpScreen()
 	Controller::showCursor(false);
 	Controller::setConsoleColor(BRIGHT_WHITE, BLACK);
 	Controller::clearConsole();
-	int left = 9, top = 2, width = 81, height = 23;
+	int left = 5, top = 2, width = 85, height = 23;
 	int line1 = 6, line2 = 19, line3 = 20;
 	printRectangle(left, top, width, height);
 	Controller::gotoXY(left + 1, line1);
@@ -290,8 +241,8 @@ void Menu::helpScreen()
 
 	Controller::gotoXY(left + 3, top + 10);
 	cout << "Rules:";
-	Controller::gotoXY(left + 13, top + 5);
-	int left1 = left + 13;
+	Controller::gotoXY(left + 17, top + 5);
+	int left1 = left + 17;
 	putchar(249); cout << " The Matching Game (commonly known as the Pikachu Puzzle Game)";
 	Controller::gotoXY(left1, top + 6);
 	cout << " includes a board of multiple cells, each of which presents a figure.";
@@ -309,10 +260,10 @@ void Menu::helpScreen()
 	cout << " Matching Game by remaking the game with characters (no figures).";
 
 	Controller::gotoXY(left + 3, top + 20);
-	cout << "About:";
-	Controller::gotoXY(left + 28, top + 19);
+	cout << "Developers:";
+	Controller::gotoXY(left + 31, top + 19);
 	cout << "Student 1: Tran Tung Lam (21127337)";
-	Controller::gotoXY(left + 28, top + 21);
+	Controller::gotoXY(left + 31, top + 21);
 	cout << "Student 2: Le Minh (21127645)";
 
 	Controller::setConsoleColor(BRIGHT_WHITE, BLACK);
@@ -360,15 +311,16 @@ void Menu::exitScreen()
 	Controller::setConsoleColor(BRIGHT_WHITE, BLACK);
 	Controller::clearConsole();
 	Controller::setConsoleColor(BRIGHT_WHITE, BLACK);
-	printRectangle(34, 18, 35, 8);
-	printRectangle(37, 23, 7, 2);
-	printRectangle(60, 23, 6, 2);
+	Menu::printRectangle(34, 13, 35, 8);
+	Menu::printRectangle(37, 18, 7, 2);
+	Menu::printRectangle(60, 18, 6, 2);
 	Controller::setConsoleColor(BRIGHT_WHITE, RED);
+	Controller::gotoXY(0, 0);
 	printLogo();
-	Controller::gotoXY(42, 20);
+	Controller::gotoXY(42, 16);
 	cout << "Do you want to exit?";
 	string str[2] = { "Yes", "No" };
-	int left[] = { 35,40,47,58,63,69 }, word[] = { 32,32,175,174 }, color[] = { BLACK, RED }, top = 24;
+	int left[] = { 35,40,47,58,63,69 }, word[] = { 32,32,175,174 }, color[] = { BLACK, RED }, top = 19;
 	bool choice = 0;
 	bool loop = 1;
 	auto print1 = [&]()
@@ -397,6 +349,7 @@ void Menu::exitScreen()
 		{
 			if (!choice)
 			{
+				Controller::setConsoleColor(BLACK, BRIGHT_WHITE);
 				Controller::clearConsole();
 				exit(0);
 			}
@@ -412,19 +365,21 @@ void Menu::exitScreen()
 void Menu::playEasy()
 {
 	Game g(_EASY);
+	g.setupGame();
 	g.startGame();
 }
 
 void Menu::playMedium()
 {
 	Game g(_MEDIUM);
+	g.setupGame();
 	g.startGame();
 }
 
 void Menu::leaderBoard() {
 	Controller::clearConsole();
 }
-//void Menu::loadScreen()
+//void Menu::leaderBoard()
 //{
 //	Controller::clearConsole();
 //	vector<string> fileName;

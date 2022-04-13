@@ -4,6 +4,7 @@
 #include <iostream>
 #include <vector>
 #include "Menu.h"
+#include <string>
 
 #define LEFT 5
 #define TOP 1
@@ -12,6 +13,7 @@ using namespace std;
 
 struct Game {
 	BoardView* board;				// Create new board
+	char playerName[10], playerID[8], className[7];
 	int _mode;
 	int _x, _y;
 	bool isPlaying;
@@ -30,6 +32,7 @@ struct Game {
 	Game(int);
 	~Game();
 
+	void setupGame();
 	void startGame();
 	void printInterface();
 
@@ -43,4 +46,6 @@ struct Game {
 	void lockBlock();
 	void deleteBlock();
 	bool isAvailableBlock(bool);
+
+	void askContinue();
 };
