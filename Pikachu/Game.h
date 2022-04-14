@@ -5,6 +5,7 @@
 #include <vector>
 #include "Menu.h"
 #include <string>
+#include <fstream>
 
 #define LEFT 5
 #define TOP 1
@@ -13,12 +14,13 @@ using namespace std;
 
 struct Game {
 	BoardView* board;				// Create new board
-	char playerName[10], playerID[8], className[7];
+	char playerName[15] = "", playerID[9] = "", className[8] = "";
 	int _mode;
 	int _x, _y;
 	bool isPlaying;
 	int _lockedBlock;
 	int _remainBlocks;
+	int score;
 
 	vector<pair<int, int>> _lockedBlockPair; //First: row - Second: column
 
@@ -35,6 +37,7 @@ struct Game {
 	void setupGame();
 	void startGame();
 	void printInterface();
+	void saveData();
 
 	void moveRight();
 	void moveLeft();
@@ -48,4 +51,5 @@ struct Game {
 	bool isAvailableBlock(bool);
 
 	void askContinue();
+	void timer();
 };

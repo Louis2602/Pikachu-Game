@@ -204,7 +204,7 @@ void Menu::helpScreen()
 	Controller::setConsoleColor(BRIGHT_WHITE, BLACK);
 	Controller::clearConsole();
 	int left = 5, top = 2, width = 85, height = 23;
-	int line1 = 6, line2 = 19, line3 = 20;
+	int line1 = 6, line2 = 19, line3 = 20, line4 = 15;
 	printRectangle(left, top, width, height);
 	Controller::gotoXY(left + 1, line1);
 	for (int i = 0; i < width; i++)
@@ -212,6 +212,11 @@ void Menu::helpScreen()
 		putchar(196);
 	}
 	Controller::gotoXY(left + 1, line2);
+	for (int i = 0; i < width; i++)
+	{
+		putchar(196);
+	}
+	Controller::gotoXY(left + 1, line4);
 	for (int i = 0; i < width; i++)
 	{
 		putchar(196);
@@ -239,7 +244,7 @@ void Menu::helpScreen()
 	putchar(249); cout << "Right: D, right arrow";
 
 
-	Controller::gotoXY(left + 3, top + 10);
+	Controller::gotoXY(left + 3, top + 8);
 	cout << "Rules:";
 	Controller::gotoXY(left + 17, top + 5);
 	int left1 = left + 17;
@@ -254,11 +259,25 @@ void Menu::helpScreen()
 	putchar(249); cout << " A legal match will make the two cells disappear. The game ends when";
 	Controller::gotoXY(left1, top + 12);
 	cout << " all matching pairs are found.";
-	Controller::gotoXY(left1, top + 14);
-	putchar(249); cout << " In this project, we will develop a simplified version of this";
-	Controller::gotoXY(left1, top + 15);
-	cout << " Matching Game by remaking the game with characters (no figures).";
 
+	Controller::gotoXY(left + 3, top + 15);
+	cout << "Scoring:";
+	Controller::setConsoleColor(BRIGHT_WHITE, GREEN);
+	Controller::gotoXY(left1 + 10, top + 14);
+	putchar(249); cout << " I Matching: +1 BTC";
+	Controller::setConsoleColor(BRIGHT_WHITE, GREEN);
+	Controller::gotoXY(left1 + 40, top + 14);
+	putchar(249); cout << " L Matching: +2 BTC";
+	Controller::setConsoleColor(BRIGHT_WHITE, GREEN);
+	Controller::gotoXY(left1 + 10, top + 15);
+	putchar(249); cout << " Z Matching: +3 BTC";
+	Controller::gotoXY(left1 + 40, top + 15);
+	putchar(249); cout << " U Matching: +4 BTC";
+	Controller::setConsoleColor(BRIGHT_WHITE, RED);
+	Controller::gotoXY(left1 + 25, top + 16);
+	putchar(249); cout << " Not Matched: -2 BTC";
+
+	Controller::setConsoleColor(BRIGHT_WHITE, BLUE);
 	Controller::gotoXY(left + 3, top + 20);
 	cout << "Developers:";
 	Controller::gotoXY(left + 31, top + 19);
@@ -376,56 +395,140 @@ void Menu::playMedium()
 	g.startGame();
 }
 
-void Menu::leaderBoard() {
+void Menu::leaderBoard()
+{
+	current_option = 0;
 	Controller::clearConsole();
+	Player p[7];
+	Controller::setConsoleColor(BRIGHT_WHITE, RED);
+	cout << R"(
+	  _      ______          _____  ______ _____  ____   ____          _____  _____  
+	 | |    |  ____|   /\   |  __ \|  ____|  __ \|  _ \ / __ \   /\   |  __ \|  __ \ 
+	 | |    | |__     /  \  | |  | | |__  | |__) | |_) | |  | | /  \  | |__) | |  | |
+	 | |    |  __|   / /\ \ | |  | |  __| |  _  /|  _ <| |  | |/ /\ \ |  _  /| |  | |
+	 | |____| |____ / ____ \| |__| | |____| | \ \| |_) | |__| / ____ \| | \ \| |__| |
+	 |______|______/_/    \_\_____/|______|_|  \_\____/ \____/_/    \_\_|  \_\_____/                                                                 
+	)";
+	Controller::setConsoleColor(BRIGHT_WHITE, BLACK);
+	printRectangle(5, 8, 85, 17);
+
+	Controller::setConsoleColor(BRIGHT_WHITE, BLUE);
+	Controller::gotoXY(8, 9);
+	cout << "STT";
+	Controller::setConsoleColor(BRIGHT_WHITE, BLACK);
+	for (int i = 1; i < 17; i++)
+	{
+		Controller::gotoXY(13, 8 + i);
+		putchar(179);
+	}
+	for (int i = 6; i < 13; i++)
+	{
+		Controller::gotoXY(i, 10);
+		putchar(196);
+	}
+	Controller::setConsoleColor(BRIGHT_WHITE, BLUE);
+	Controller::gotoXY(18, 9);
+	cout << "Name";
+	Controller::setConsoleColor(BRIGHT_WHITE, BLACK);
+	for (int i = 1; i < 17; i++)
+	{
+		Controller::gotoXY(30, 8 + i);
+		putchar(179);
+	}
+	for (int i = 14; i < 30; i++)
+	{
+		Controller::gotoXY(i, 10);
+		putchar(196);
+	}
+	Controller::setConsoleColor(BRIGHT_WHITE, BLUE);
+	Controller::gotoXY(36, 9);
+	cout << "ID";
+	Controller::setConsoleColor(BRIGHT_WHITE, BLACK);
+	for (int i = 1; i < 17; i++)
+	{
+		Controller::gotoXY(45, 8 + i);
+		putchar(179);
+	}
+	for (int i = 31; i < 45; i++)
+	{
+		Controller::gotoXY(i, 10);
+		putchar(196);
+	}
+	Controller::setConsoleColor(BRIGHT_WHITE, BLUE);
+	Controller::gotoXY(52, 9);
+	cout << "Class";
+	Controller::setConsoleColor(BRIGHT_WHITE, BLACK);
+	for (int i = 1; i < 17; i++)
+	{
+		Controller::gotoXY(62, 8 + i);
+		putchar(179);
+	}
+	for (int i = 46; i < 62; i++)
+	{
+		Controller::gotoXY(i, 10);
+		putchar(196);
+	}
+	Controller::setConsoleColor(BRIGHT_WHITE, BLUE);
+	Controller::gotoXY(75, 9);
+	cout << "Score";
+	Controller::setConsoleColor(BRIGHT_WHITE, BLACK);
+	for (int i = 63; i < 91; i++)
+	{
+		Controller::gotoXY(i, 10);
+		putchar(196);
+	}
+	int y = 11;
+	int lines = 0;
+	int i = 0;
+	string tmp;
+	fstream fs("leaderboard.txt", ios::in);
+	while (!fs.eof()) {
+		getline(fs, p[i].playerName, '\n');
+		getline(fs, p[i].playerID, '\n');
+		getline(fs, p[i].className, '\n');
+		fs >> p[i].score;
+		getline(fs, tmp, '\n');
+		i++;
+		lines++;
+	}
+	fs.close();
+
+	for (int i = 0; i < lines; i++) {
+		for (int j = i + 1; j < lines; j++) {
+			if (p[j].score > p[i].score) {
+				swap(p[i], p[j]);
+			}
+		}
+	}
+	i = 0;
+	for (int i = 1; i < lines; i++) {
+		Controller::gotoXY(9, y);
+		cout << i;
+		Controller::gotoXY(16, y);
+		cout << p[i - 1].playerName;
+		Controller::gotoXY(33, y);
+		cout << p[i - 1].playerID;
+		Controller::gotoXY(50, y);
+		cout << p[i - 1].className;
+		Controller::gotoXY(76, y);
+		cout << p[i - 1].score;
+		y += 2;
+	}
+	
+	Controller::setConsoleColor(BRIGHT_WHITE, BLACK);
+	printRectangle(45, 27, 8, 2);
+	Controller::setConsoleColor(BRIGHT_WHITE, RED);
+	Controller::gotoXY(43, 28);
+	putchar(175);
+	Controller::gotoXY(48, 28);
+	cout << "Back";
+	Controller::gotoXY(56, 28);
+	putchar(174);
+	while (Controller::getConsoleInput() != 6)
+	{
+		Controller::playSound(ERROR_SOUND);
+	}
 }
-//void Menu::leaderBoard()
-//{
-//	Controller::clearConsole();
-//	vector<string> fileName;
-//	for (auto& p : filesystem::recursive_directory_iterator("load"))
-//	{
-//		if (p.path().extension() == ".txt")
-//		{
-//			string temp = p.path().filename().string();
-//			temp.erase(temp.find_last_of('.'));
-//			fileName.push_back(temp);
-//		}
-//	}
-//	if (!fileName.size())
-//	{
-//		Controller::gotoXY(42, 15);
-//		cout << "No game files were found!";
-//		Sleep(3000);
-//		return;
-//	}
-//	int file = 8;
-//	changeFile(3, fileName, file);
-//	bool chosen = 0;
-//	while (!chosen)
-//	{
-//		int key = Controller::getConsoleInput();
-//		if (key == 6)
-//		{
-//			Game g;
-//
-//			g.startGame();
-//			chosen = 1;
-//		}
-//		else if (key > 1 && key < 6)
-//		{
-//			changeFile(key, fileName, file);
-//		}
-//		else if (key == 1)
-//		{
-//			chosen = 1;
-//		}
-//		else
-//		{
-//			Controller::playSound(4);
-//		}
-//	}
-//}
 
 void Menu::changeFile(int key, vector<string>& fileName, int& file)
 {

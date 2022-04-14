@@ -34,3 +34,10 @@ struct Menu
 	static void changeOption(bool, bool);					//Thay đổi lựa chọn
 	static void changeFile(int, vector<string>&, int&);		//Thay đổi file
 };
+
+struct Player {
+	string playerName;
+	string playerID;
+	string className;
+	int score;
+};

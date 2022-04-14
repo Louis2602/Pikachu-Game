@@ -9,6 +9,7 @@ Game::Game(int mode)
 	_lockedBlock = 0;
 	_lockedBlockPair.clear();
 	_remainBlocks = _mode * _mode;
+	score = 0;
 }
 
 Game::~Game() {
@@ -19,6 +20,7 @@ Game::~Game() {
 void Game::startGame() 
 {
 	Controller::clearConsole();
+
 	while (isPlaying) {
 		bool isPause = false;
 		printInterface();
@@ -35,6 +37,7 @@ void Game::startGame()
 				Controller::playSound(ERROR_SOUND);
 				break;
 			case 1:
+				saveData();
 				Menu::exitScreen();
 				return;
 			case 2:
@@ -63,7 +66,8 @@ void Game::startGame()
 		askContinue();
 		_remainBlocks = _mode * _mode;
 	}
-	
+
+	saveData();
 }
 
 void Game::setupGame() {
@@ -79,7 +83,7 @@ void Game::setupGame() {
 	Controller::setConsoleColor(BRIGHT_WHITE, LIGHT_BLUE);
 	Controller::gotoXY(35, 18);
 	cout << "Enter your name:  ";
-	cin.getline(playerName, 11);                                       
+	cin.getline(playerName, 15);
 	Controller::gotoXY(35, 20);
 	cout << "Enter your ID:  ";
 	cin.getline(playerID, 9);
@@ -87,6 +91,12 @@ void Game::setupGame() {
 	cout << "Enter your class's name:  ";
 	cin.getline(className, 8);
 	Controller::showCursor(false);
+}
+
+void Game::saveData() {
+	fstream fs("leaderboard.txt", ios::app);
+	fs << playerName << '\n' << playerID << '\n' << className << '\n' << score << '\n';
+	fs.close();
 }
 
 void Game::moveRight()
@@ -199,11 +209,26 @@ void Game::printInterface()
 
 	Controller::setConsoleColor(BRIGHT_WHITE, BLUE);
 	Controller::gotoXY(65, 5);
-	cout << "Player's name: " << playerName;
+	if(strlen(playerName) != 0)
+		cout << "Player's name: " << playerName;
+	else {
+		strcpy_s(playerName, "unknown");
+		cout << "Player's name: " << playerName;
+	}
 	Controller::gotoXY(65, 7);
-	cout << "Student's ID: " << playerID;
+	if(strlen(playerID) != 0)
+		cout << "Student's ID: " << playerID;
+	else {
+		strcpy_s(playerID, "unknown");
+		cout << "Student's ID: " << playerID;
+	}
 	Controller::gotoXY(65, 9);
-	cout << "Class: " << className;
+	if(strlen(className) != 0)
+		cout << "Class: " << className;
+	else {
+		strcpy_s(className, "unknown");
+		cout << "Class: " << className;
+	}
 
 	Controller::setConsoleColor(BRIGHT_WHITE, BLACK);
 	Menu::printRectangle(60, 15, 31, 2);
@@ -213,6 +238,8 @@ void Game::printInterface()
 	Controller::setConsoleColor(BRIGHT_WHITE, BLUE);
 	Controller::gotoXY(65, 18);
 	cout << "Moves:";
+	Controller::gotoXY(65, 19);
+	cout << "Current score:";
 
 	Controller::setConsoleColor(BRIGHT_WHITE, BLACK);
 	Menu::printRectangle(59, 27, 14, 2);
@@ -579,6 +606,16 @@ bool Game::checkMatching(pair<int, int> firstBlock, pair<int, int> secondBlock, 
 			Controller::setConsoleColor(BRIGHT_WHITE, BLUE);
 			Controller::gotoXY(72, 18);
 			cout << "Not Matched";
+			score -= 2;
+			Controller::setConsoleColor(BRIGHT_WHITE, RED);
+			if (score >= 0) {
+				Controller::gotoXY(80, 19);
+				cout << score << " BTC ";
+			}
+			else {
+				Controller::gotoXY(80, 19);
+				cout << score << " BTC";
+			}
 		}
 		return 0;
 	}
@@ -587,6 +624,16 @@ bool Game::checkMatching(pair<int, int> firstBlock, pair<int, int> secondBlock, 
 			Controller::setConsoleColor(BRIGHT_WHITE, BLUE);
 			Controller::gotoXY(72, 18);
 			cout << "I Matching.";
+			score += 1;
+			Controller::setConsoleColor(BRIGHT_WHITE, GREEN);
+			if (score >= 0) {
+				Controller::gotoXY(80, 19);
+				cout << score << " BTC ";
+			}
+			else {
+				Controller::gotoXY(80, 19);
+				cout << score << " BTC";
+			}
 		}
 		return 1;
 	}
@@ -595,6 +642,16 @@ bool Game::checkMatching(pair<int, int> firstBlock, pair<int, int> secondBlock, 
 			Controller::setConsoleColor(BRIGHT_WHITE, BLUE);
 			Controller::gotoXY(72, 18);
 			cout << "L Matching.";
+			score += 2;
+			Controller::setConsoleColor(BRIGHT_WHITE, GREEN);
+			if (score >= 0) {
+				Controller::gotoXY(80, 19);
+				cout << score << " BTC ";
+			}
+			else {
+				Controller::gotoXY(80, 19);
+				cout << score << " BTC";
+			}
 		}
 		return 1;
 	}
@@ -603,6 +660,16 @@ bool Game::checkMatching(pair<int, int> firstBlock, pair<int, int> secondBlock, 
 			Controller::setConsoleColor(BRIGHT_WHITE, BLUE);
 			Controller::gotoXY(72, 18);
 			cout << "Z Matching.";
+			score += 3;
+			Controller::setConsoleColor(BRIGHT_WHITE, GREEN);
+			if (score >= 0) {
+				Controller::gotoXY(80, 19);
+				cout << score << " BTC ";
+			}
+			else {
+				Controller::gotoXY(80, 19);
+				cout << score << " BTC";
+			}
 		}
 		return 1;
 	}
@@ -611,6 +678,16 @@ bool Game::checkMatching(pair<int, int> firstBlock, pair<int, int> secondBlock, 
 			Controller::setConsoleColor(BRIGHT_WHITE, BLUE);
 			Controller::gotoXY(72, 18);
 			cout << "U Matching.";
+			score += 4;
+			Controller::setConsoleColor(BRIGHT_WHITE, GREEN);
+			if (score >= 0) {
+				Controller::gotoXY(80, 19);
+				cout << score << " BTC ";
+			}
+			else {
+				Controller::gotoXY(80, 19);
+				cout << score << " BTC";
+			}
 		}
 		return 1;
 	}
@@ -642,6 +719,9 @@ void Game::deleteBlock() {
 		Controller::setConsoleColor(BRIGHT_WHITE, BLUE);
 		Controller::gotoXY(69, 22);
 		cout << "CONGRATULATIONS!";
+		Controller::gotoXY(70, 23);
+		cout << "Your score: " << score;
+
 		Controller::playSound(WIN_SOUND);
 		board->unselectedBlock(_x, _y);
 		_x = board->getXAt(0, 0);
