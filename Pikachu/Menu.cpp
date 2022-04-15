@@ -114,7 +114,7 @@ void Menu::printAnimation()
 	Controller::clearConsole();
 	char symbolpos[] = { 5,0,19,0,33,0,47,0,61,0,75,0,89,0,0,103,5,13,19,
 							   13,33,13,47,13,61,13,75,13,89,13,13,103,13,18,26,18,40,18,
-							   54,18,68,18,82,18,96,18,5,24,19,24,33,24,47,24,61,24,75,24,
+							   54,18,68,18,82,18,18,96,5,24,19,24,33,24,47,24,61,24,75,24,
 							   89,24,24,103,12,30,26,30,40,30,54,30,68,30,82,30,96,30 };
 	int n = (sizeof(symbolpos) / sizeof(symbolpos[0])) / 2;
 	bool turn = 0;
@@ -274,16 +274,19 @@ void Menu::helpScreen()
 	Controller::gotoXY(left1 + 40, top + 15);
 	putchar(249); cout << " U Matching: +4 BTC";
 	Controller::setConsoleColor(BRIGHT_WHITE, RED);
-	Controller::gotoXY(left1 + 25, top + 16);
+	Controller::gotoXY(left1 + 10, top + 16);
 	putchar(249); cout << " Not Matched: -2 BTC";
+	Controller::setConsoleColor(BRIGHT_WHITE, RED);
+	Controller::gotoXY(left1 + 40, top + 16);
+	putchar(249); cout << " Move suggestion: -2 BTC";
 
 	Controller::setConsoleColor(BRIGHT_WHITE, BLUE);
 	Controller::gotoXY(left + 3, top + 20);
 	cout << "Developers:";
 	Controller::gotoXY(left + 31, top + 19);
-	cout << "Student 1: Tran Tung Lam (21127337)";
+	cout << "Dev 1: Tran Tung Lam (21127337)";
 	Controller::gotoXY(left + 31, top + 21);
-	cout << "Student 2: Le Minh (21127645)";
+	cout << "Dev 2: Le Minh (21127645)";
 
 	Controller::setConsoleColor(BRIGHT_WHITE, BLACK);
 	printRectangle(45, 27, 8, 2);
@@ -399,7 +402,7 @@ void Menu::leaderBoard()
 {
 	current_option = 0;
 	Controller::clearConsole();
-	Player p[7];
+	Player p[100];
 	Controller::setConsoleColor(BRIGHT_WHITE, RED);
 	cout << R"(
 	  _      ______          _____  ______ _____  ____   ____          _____  _____  
@@ -469,38 +472,52 @@ void Menu::leaderBoard()
 		putchar(196);
 	}
 	Controller::setConsoleColor(BRIGHT_WHITE, BLUE);
-	Controller::gotoXY(75, 9);
+	Controller::gotoXY(68, 9);
+	cout << "Mode";
+	Controller::setConsoleColor(BRIGHT_WHITE, BLACK);
+	for (int i = 1; i < 17; i++)
+	{
+		Controller::gotoXY(78, 8 + i);
+		putchar(179);
+	}
+	for (int i = 63; i < 78; i++)
+	{
+		Controller::gotoXY(i, 10);
+		putchar(196);
+	}
+
+	Controller::setConsoleColor(BRIGHT_WHITE, BLUE);
+	Controller::gotoXY(82, 9);
 	cout << "Score";
 	Controller::setConsoleColor(BRIGHT_WHITE, BLACK);
-	for (int i = 63; i < 91; i++)
+	for (int i = 79; i < 91; i++)
 	{
 		Controller::gotoXY(i, 10);
 		putchar(196);
 	}
 	int y = 11;
-	int lines = 0;
-	int i = 0;
+	int lines = 8;
+	int n = 0;
 	string tmp;
 	fstream fs("leaderboard.txt", ios::in);
 	while (!fs.eof()) {
-		getline(fs, p[i].playerName, '\n');
-		getline(fs, p[i].playerID, '\n');
-		getline(fs, p[i].className, '\n');
-		fs >> p[i].score;
+		getline(fs, p[n].playerName, '\n');
+		getline(fs, p[n].playerID, '\n');
+		getline(fs, p[n].className, '\n');
+		fs >> p[n].mode;
+		fs >> p[n].score;
 		getline(fs, tmp, '\n');
-		i++;
-		lines++;
+		n++;
 	}
 	fs.close();
 
-	for (int i = 0; i < lines; i++) {
-		for (int j = i + 1; j < lines; j++) {
+	for (int i = 0; i < n; i++) {
+		for (int j = i + 1; j < n; j++) {
 			if (p[j].score > p[i].score) {
 				swap(p[i], p[j]);
 			}
 		}
 	}
-	i = 0;
 	for (int i = 1; i < lines; i++) {
 		Controller::gotoXY(9, y);
 		cout << i;
@@ -510,7 +527,9 @@ void Menu::leaderBoard()
 		cout << p[i - 1].playerID;
 		Controller::gotoXY(50, y);
 		cout << p[i - 1].className;
-		Controller::gotoXY(76, y);
+		Controller::gotoXY(68, y);
+		cout << p[i - 1].mode;
+		Controller::gotoXY(84, y);
 		cout << p[i - 1].score;
 		y += 2;
 	}

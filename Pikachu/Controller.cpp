@@ -118,6 +118,8 @@ int Controller::getConsoleInput()
 			return 6;
 		else if (c == 72 || c == 104) //H, h
 			return 7;
+		else if (c == 77 || c == 109) // M, m
+			return 8;
 		else
 			return 0;                 //nút khác
 	}

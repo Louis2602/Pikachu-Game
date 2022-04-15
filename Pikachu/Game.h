@@ -14,7 +14,7 @@ using namespace std;
 
 struct Game {
 	BoardView* board;				// Create new board
-	char playerName[15] = "", playerID[9] = "", className[8] = "";
+	char playerName[15] = "", playerID[9] = "", className[8] = "", mode[8] = "";
 	int _mode;
 	int _x, _y;
 	bool isPlaying;
@@ -51,5 +51,5 @@ struct Game {
 	bool isAvailableBlock(bool);
 
 	void askContinue();
-	void timer();
+	void moveSuggestion();
 };

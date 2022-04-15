@@ -220,8 +220,8 @@ void BoardView::buildBoardData() {
 	delete[] checkDuplicate;
 }
 
-void BoardView::selectedBlock(int x, int y) {
-	Controller::setConsoleColor(GREEN, BLACK);
+void BoardView::selectedBlock(int x, int y, int color) {
+	Controller::setConsoleColor(color, BLACK);
 	for (int i = y - 1; i <= y + 1; i++) {
 		for (int j = x - 3; j <= x + 3; j++) {
 			Controller::gotoXY(j, i);

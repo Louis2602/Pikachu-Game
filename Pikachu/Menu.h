@@ -40,4 +40,5 @@ struct Player {
 	string playerID;
 	string className;
 	int score;
+	string mode;
 };

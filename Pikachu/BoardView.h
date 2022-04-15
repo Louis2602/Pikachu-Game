@@ -33,7 +33,7 @@ struct BoardView {
 	void renderBoard();
 	void buildBoardData();
 
-	void selectedBlock(int, int);
+	void selectedBlock(int, int, int);
 	void unselectedBlock(int, int);
 	
 	void lockBlock(int, int);
