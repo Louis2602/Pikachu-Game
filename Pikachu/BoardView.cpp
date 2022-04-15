@@ -283,32 +283,40 @@ void BoardView::deleteBlock(int x, int y)
 	for (int i = y - 1; i <= y + 1; i++) {
 		for (int j = x - 3; j <= x + 3; j++) {
 			Controller::gotoXY(j, i);
-			putchar(32);
+			// putchar(32);
+			putchar(background[i- top][j-left]);
+
 		}
 	}
 	Controller::gotoXY(x, y);
 	if (y - 4 >= getYAt(0, 0) && getCheck(x, y - 4) == _DELETE) {
 		for (int i = x - 3; i <= x + 3; i++) {
 			Controller::gotoXY(i, y - 2);
-			putchar(32);
+			//putchar(32);
+			putchar(background[y - 2 - top][i - left]);
+
 		}
 	}
 	if (y + 4 <= getYAt(size - 1, size - 1) && getCheck(x, y + 4) == _DELETE) {
 		for (int i = x - 3; i <= x + 3; i++) {
 			Controller::gotoXY(i, y + 2);
-			putchar(32);
+			//putchar(32);
+			putchar(background[y + 2 - top][i - left]);
 		}
 	}
 	if (x - 8 >= getXAt(0, 0) && getCheck(x - 8, y) == _DELETE) {
 		for (int i = y - 1; i <= y + 1; i++) {
 			Controller::gotoXY(x - 4, i);
-			putchar(32);
+			//putchar(32);
+			putchar(background[i - top][x - 4 - left]);
 		}
 	}
 	if (x + 8 <= getXAt(size - 1, size - 1) && getCheck(x + 8, y) == _DELETE) {
 		for (int i = y - 1; i <= y + 1; i++) {
 			Controller::gotoXY(x + 4, i);
-			putchar(32);
+			//putchar(32);
+			putchar(background[i - top][x + 4 - left]);
+
 		}
 	}
 }
@@ -1001,4 +1009,13 @@ void BoardView::deleteLineU(pair<int, int>firstBlock, pair<int, int>secondBlock,
 		putchar(32);
 		return;
 	}
+}
+
+void BoardView::createBackground() {
+	fstream fs("plane.txt", ios::in);
+	int i = 0;
+	while (!fs.eof()) {
+		getline(fs, background[i]);
+	}
+	fs.close();
 }

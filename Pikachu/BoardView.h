@@ -2,9 +2,11 @@
 #include "Controller.h"
 #include "Point.h"
 #include <iostream>
+#include <fstream>
 #include <ctime>
 #include <vector>
 #include <algorithm>
+#include <string>
 
 using namespace std;
 
@@ -14,6 +16,7 @@ struct BoardView {
 	int left, top;					// tọa độ góc trên bàn cờ
 	Point** pBoard;					// Mảng tọa độ ô cờ
 	int** pokemons;
+	string* background;
 
 	BoardView(int, int, int);			
 	~BoardView();
@@ -47,4 +50,6 @@ struct BoardView {
 	void deleteLineZ(pair<int, int>, pair<int, int>, pair<int, int>, pair<int, int>);
 	void drawLineU(pair<int, int>, pair<int, int>, pair<int, int>, pair<int, int>);
 	void deleteLineU(pair<int, int>, pair<int, int>, pair<int, int>, pair<int, int>);
+
+	void createBackground();
 };
