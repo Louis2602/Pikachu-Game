@@ -31,6 +31,18 @@ void Game::startGame()
 		board->selectedBlock(_x, _y, GREEN);
 		putchar(board->getPokemons(_x, _y));
 		Controller::gotoXY(_x, _y);
+		if (!isAvailableBlock(true)) {
+			Controller::setConsoleColor(BRIGHT_WHITE, RED);
+			Controller::gotoXY(69, 18);
+			cout << "Game Announcement";
+			Controller::gotoXY(64, 19);
+			cout << "There are no more ways left!";
+			Sleep(800);
+			Controller::gotoXY(62, 21);
+			cout << "Auto reset the board. Have fun!";
+			Sleep(1000);
+			startGame();
+		}
 		while (_remainBlocks && !isPause) {
 			switch (Controller::getConsoleInput())
 			{
@@ -74,10 +86,10 @@ void Game::startGame()
 }
 
 void Game::setupGame() {
-	Controller::setConsoleColor(BRIGHT_WHITE, GRAY);
+	Controller::setConsoleColor(BRIGHT_WHITE, YELLOW);
 	Controller::clearConsole();
 	Controller::gotoXY(0, 0);
-	Menu::printLogo();
+	Menu::printLogo();	
 	Controller::showCursor(true);
 	Controller::setConsoleColor(BRIGHT_WHITE, RED);
 	Controller::gotoXY(25, 15);
@@ -736,7 +748,6 @@ void Game::deleteBlock() {
 		cout << "CONGRATULATIONS!";
 		Controller::gotoXY(70, 21);
 		cout << "Your score: " << score;
-
 		Controller::playSound(WIN_SOUND);
 		board->unselectedBlock(_x, _y);
 		_x = board->getXAt(0, 0);

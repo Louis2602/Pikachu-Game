@@ -194,7 +194,7 @@ void BoardView::buildBoardData() {
 	// Random pokemons
 	for (int i = 0; i < size; i++) {
 		for (int j = 0; j < size; j+=2) {
-			pokemons[i][j] = pokemons[i][j + 1] = /*rand() % 26*/ + 'A';
+			pokemons[i][j] = pokemons[i][j + 1] = rand() % 26 + 'A';
 		}
 	}
 
