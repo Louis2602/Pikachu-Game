@@ -499,18 +499,17 @@ void Menu::leaderBoard()
 	int lines = 8;
 	int n = 0;
 	string tmp;
-	fstream fs("leaderboard.txt", ios::in);
+	fstream fs("rank\\leaderboard.txt", ios::in);
+
 	while (!fs.eof()) {
 		getline(fs, p[n].playerName, '\n');
 		getline(fs, p[n].playerID, '\n');
 		getline(fs, p[n].className, '\n');
-		fs >> p[n].mode;
-		fs >> p[n].score;
-		getline(fs, tmp, '\n');
+		getline(fs, p[n].mode, '\n');
+		getline(fs, p[n].score, '\n');
 		n++;
 	}
 	fs.close();
-
 	for (int i = 0; i < n; i++) {
 		for (int j = i + 1; j < n; j++) {
 			if (p[j].score > p[i].score) {
@@ -533,7 +532,7 @@ void Menu::leaderBoard()
 		cout << p[i - 1].score;
 		y += 2;
 	}
-	
+
 	Controller::setConsoleColor(BRIGHT_WHITE, BLACK);
 	printRectangle(45, 27, 8, 2);
 	Controller::setConsoleColor(BRIGHT_WHITE, RED);

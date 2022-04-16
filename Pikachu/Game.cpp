@@ -20,8 +20,8 @@ Game::~Game() {
 void Game::startGame() 
 {
 	Controller::clearConsole();
-
 	while (isPlaying) {
+		_remainBlocks = _mode * _mode;
 		score = 0;
 		bool isPause = false;
 		printInterface();
@@ -68,7 +68,6 @@ void Game::startGame()
 		if (isPause)
 			continue;
 		askContinue();
-		_remainBlocks = _mode * _mode;
 	}
 
 	saveData();
@@ -102,7 +101,7 @@ void Game::setupGame() {
 }
 
 void Game::saveData() {
-	fstream fs("leaderboard.txt", ios::app);
+	fstream fs("rank\\leaderboard.txt", ios::app);
 	fs << playerName << '\n' << playerID << '\n' << className << '\n' << mode << '\n' << score << '\n';
 	fs.close();
 }
@@ -202,6 +201,7 @@ void Game::moveUp()
 
 void Game::printInterface()
 {
+	board->createBackground();
 	board->showBoard();
 	board->buildBoardData();
 	board->renderBoard();
@@ -719,11 +719,11 @@ void Game::deleteBlock() {
 		board->selectedBlock(_x, _y, GREEN);
 		return;
 	}
-	_remainBlocks -= 2;
 	for (auto block : _lockedBlockPair)
 		board->deleteBlock(block.first, block.second);
 	_lockedBlockPair.clear();
 	board->selectedBlock(_x, _y, GREEN);
+	_remainBlocks -= 2;
 	if (_remainBlocks == 0) {
 		Controller::setConsoleColor(BRIGHT_WHITE, RED);
 		Controller::gotoXY(69, 18);
@@ -742,7 +742,7 @@ void Game::deleteBlock() {
 		_x = board->getXAt(0, 0);
 		_y = board->getYAt(0, 0);
 		Controller::gotoXY(_x, _y);
-		board->selectedBlock(_x, _y, GREEN);
+		board->selectedBlock(_x, _y, BRIGHT_WHITE);
 		Sleep(7000);
 		return;
 	}
@@ -751,7 +751,7 @@ void Game::deleteBlock() {
 		Controller::setConsoleColor(BRIGHT_WHITE, RED);
 		Controller::gotoXY(69, 18);
 		cout << "Game Announcement";
-		Controller::gotoXY(65, 19);
+		Controller::gotoXY(64, 19);
 		cout << "There are no more ways left!";
 		Sleep(800);
 		Controller::gotoXY(62, 21);

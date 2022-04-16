@@ -6,8 +6,9 @@ BoardView::BoardView(int psize, int pX, int pY) : size(psize), left(pX), top(pY)
 	for (int i = 0; i < psize; i++)
 		pokemons[i] = new int[size];
 	pBoard = new Point * [psize];
-	for (int i = 0; i < psize; i++)
+	for (int i = 0; i < psize; i++)		
 		pBoard[i] = new Point[psize];
+	background = new string[psize * 10];
 }
 
 BoardView::~BoardView()
@@ -16,6 +17,8 @@ BoardView::~BoardView()
 		delete[] pBoard[i];
 	delete[] pBoard,
 	pBoard = nullptr;
+	delete[] background;
+	background = nullptr;
 }
 
 int BoardView::getSize()
@@ -191,7 +194,7 @@ void BoardView::buildBoardData() {
 	// Random pokemons
 	for (int i = 0; i < size; i++) {
 		for (int j = 0; j < size; j+=2) {
-			pokemons[i][j] = pokemons[i][j + 1] = rand() % 26 + 'A';
+			pokemons[i][j] = pokemons[i][j + 1] = /*rand() % 26*/ + 'A';
 		}
 	}
 
@@ -233,6 +236,15 @@ void BoardView::selectedBlock(int x, int y, int color) {
 		putchar(getPokemons(x, y));
 		Controller::gotoXY(x, y);
 	}
+	else {
+		for (int i = y - 1; i <= y + 1; i++) {
+			for (int j = x - 3; j <= x + 3; j++) {
+				Controller::gotoXY(j, i);
+				//putchar(32);
+				putchar(background[i - top][j - left]);
+			}
+		}
+	}
 }
 
 void BoardView::unselectedBlock(int x, int y) {
@@ -252,6 +264,15 @@ void BoardView::unselectedBlock(int x, int y) {
 		Controller::gotoXY(x, y);
 		putchar(getPokemons(x, y));
 		Controller::gotoXY(x, y);
+	}
+	else {
+		for (int i = y - 1; i <= y + 1; i++) {
+			for (int j = x - 3; j <= x + 3; j++) {
+				Controller::gotoXY(j, i);
+				//putchar(32);
+				putchar(background[i - top][j - left]);
+			}
+		}
 	}
 }
 
@@ -284,10 +305,11 @@ void BoardView::deleteBlock(int x, int y)
 		for (int j = x - 3; j <= x + 3; j++) {
 			Controller::gotoXY(j, i);
 			// putchar(32);
-			putchar(background[i- top][j-left]);
+			putchar(background[i - top][j - left]);
 
 		}
 	}
+	//Delete top border
 	Controller::gotoXY(x, y);
 	if (y - 4 >= getYAt(0, 0) && getCheck(x, y - 4) == _DELETE) {
 		for (int i = x - 3; i <= x + 3; i++) {
@@ -297,6 +319,7 @@ void BoardView::deleteBlock(int x, int y)
 
 		}
 	}
+	//Delete bottom border
 	if (y + 4 <= getYAt(size - 1, size - 1) && getCheck(x, y + 4) == _DELETE) {
 		for (int i = x - 3; i <= x + 3; i++) {
 			Controller::gotoXY(i, y + 2);
@@ -304,6 +327,7 @@ void BoardView::deleteBlock(int x, int y)
 			putchar(background[y + 2 - top][i - left]);
 		}
 	}
+	//Delete left border
 	if (x - 8 >= getXAt(0, 0) && getCheck(x - 8, y) == _DELETE) {
 		for (int i = y - 1; i <= y + 1; i++) {
 			Controller::gotoXY(x - 4, i);
@@ -311,6 +335,7 @@ void BoardView::deleteBlock(int x, int y)
 			putchar(background[i - top][x - 4 - left]);
 		}
 	}
+	//Delete right border
 	if (x + 8 <= getXAt(size - 1, size - 1) && getCheck(x + 8, y) == _DELETE) {
 		for (int i = y - 1; i <= y + 1; i++) {
 			Controller::gotoXY(x + 4, i);
@@ -1012,10 +1037,15 @@ void BoardView::deleteLineU(pair<int, int>firstBlock, pair<int, int>secondBlock,
 }
 
 void BoardView::createBackground() {
-	fstream fs("plane.txt", ios::in);
+	ifstream bg;
+	if(size == 4)
+		bg.open("images\\easy.txt");
+	else
+		bg.open("images\\medium.txt");
 	int i = 0;
-	while (!fs.eof()) {
-		getline(fs, background[i]);
+	while (!bg.eof()) {
+		getline(bg, background[i]);
+		i++;
 	}
-	fs.close();
+	bg.close();
 }
