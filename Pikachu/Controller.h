@@ -37,8 +37,7 @@
 #define ENTER_SOUND 1
 #define ERROR_SOUND 2
 #define WIN_SOUND 4
-#define LOSE_SOUND 5
-#define BACKGROUND_SOUND 6
+#define BACKGROUND_SOUND 5
 using namespace std;
 
 struct Controller {
