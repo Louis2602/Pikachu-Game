@@ -512,11 +512,12 @@ void Menu::leaderBoard()
 	fstream fs("rank\\leaderboard.txt", ios::in);
 
 	while (!fs.eof()) {
-		getline(fs, p[n].playerName, '\n');
-		getline(fs, p[n].playerID, '\n');
-		getline(fs, p[n].className, '\n');
-		getline(fs, p[n].mode, '\n');
-		getline(fs, p[n].score, '\n');
+		getline(fs, p[n].playerName);
+		getline(fs, p[n].playerID);
+		getline(fs, p[n].className);
+		getline(fs, p[n].mode);
+		fs >> p[n].score;
+		fs.ignore();
 		n++;
 	}
 	fs.close();

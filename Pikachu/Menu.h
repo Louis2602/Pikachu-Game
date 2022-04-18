@@ -38,6 +38,6 @@ struct Player {
 	string playerName;
 	string playerID;
 	string className;
-	string score;
+	int score;
 	string mode;
 };
