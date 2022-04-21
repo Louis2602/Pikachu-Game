@@ -43,3 +43,13 @@ world
 123
 EASY
 11
+unknown
+unknown
+unknown
+EASY
+16
+unknown
+unknown
+unknown
+EASY
+16

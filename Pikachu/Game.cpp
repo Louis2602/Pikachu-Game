@@ -764,6 +764,7 @@ void Game::deleteBlock() {
 		cout << "Game Announcement";
 		Controller::gotoXY(64, 19);
 		cout << "There are no more ways left!";
+		Controller::playSound(EFFECT_SOUND);
 		Sleep(800);
 		Controller::gotoXY(62, 21);
 		cout << "Auto reset the board. Have fun!";
