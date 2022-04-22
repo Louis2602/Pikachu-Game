@@ -765,10 +765,10 @@ void Game::deleteBlock() {
 		Controller::gotoXY(64, 19);
 		cout << "There are no more ways left!";
 		Controller::playSound(EFFECT_SOUND);
-		Sleep(800);
+		Sleep(1000);
 		Controller::gotoXY(62, 21);
 		cout << "Auto reset the board. Have fun!";
-		Sleep(1000);
+		Sleep(4000);
 		startGame();
 	}		
 }
